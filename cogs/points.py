@@ -98,8 +98,5 @@ class MemberPoints(commands.Cog):
             title=f"Member points."
         )
 
-def check_user_access(ctx, user):
-
-
 def setup(client):
     client.add_cog(MemberPoints(client))
