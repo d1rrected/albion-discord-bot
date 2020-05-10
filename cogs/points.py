@@ -71,7 +71,7 @@ class MemberPoints(commands.Cog):
         # Debug message
         if self.debug:
             await self.debugChannel.send(f"type is {ctx.author}")
-            role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.server.roles)
+            role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
 
             if role in ctx.user.roles:
                 self.debugChannel.send(f"User roles: {ctx.user.roles}")
