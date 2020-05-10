@@ -53,9 +53,9 @@ class MemberPoints(commands.Cog):
         self.MEMBERS_LIST = self.SHEET.get_all_records()
 
     @commands.command(
-        aliases=["add", "reward"]
+        aliases=["add", "reward", "отсыпь"]
     )
-    async def add_points(self, ctx, *, name):
+    async def add_points(self, ctx, *, points):
         """Fetch current prices from Data Project API.
 
         - Usage: <commandPrefix> price <item name>
@@ -73,15 +73,29 @@ class MemberPoints(commands.Cog):
             await self.debugChannel.send(f"Check user {ctx.author} roles")
 
             needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
-            await self.debugChannel.send(f"needed_role {needed_role}")
+            #await self.debugChannel.send(f"needed_role {needed_role}")
+
+            points_change = points.split(' ')[0]
+            name_change = points.split(' ')[1]
 
             user_roles = ctx.message.author.roles
-            await self.debugChannel.send(f"user_roles {user_roles}")
+
+            if any(role.name == needed_role for role in user_roles):
+                self.debugChannel.send(f"User {ctx.message.author} have access.")
+            else:
+                self.debugChannel.send(f"User {ctx.message.author} DOES NOT have access. POSHEL NAHUY!")
+
+            if points_change[0] == '+':
+                await self.debugChannel.send(f"Add {points_change} from {name_change}")
+
+            if points_change[0] == '-':
+                await self.debugChannel.send(f"Remove {points_change} from {name_change}")
+            #await self.debugChannel.send(f"user_roles {user_roles}")
 
 
-            await self.debugChannel.send(f"Author roles: {ctx.message.author.roles}")
-            await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content} {name}")
-            await self.debugChannel.send(f"{self.MEMBERS_LIST}")
+            #await self.debugChannel.send(f"Author roles: {ctx.message.author.roles}")
+            #await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content} {name}")
+            #await self.debugChannel.send(f"{self.MEMBERS_LIST}")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -89,9 +103,6 @@ class MemberPoints(commands.Cog):
                 return
 
         await ctx.channel.trigger_typing()
-
-        if ctx.message.content:
-            await self.workChannel.send(f"End of debug")
 
         # Create Discord embed
         em = discord.Embed(
