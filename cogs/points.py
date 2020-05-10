@@ -48,7 +48,7 @@ class MemberPoints(commands.Cog):
         self.MEMBERS_LIST = self.SHEET.get_all_records()
 
     @commands.command(
-        aliases=["add", "reward"]
+        aliases=["add", "reward",]
     )
     async def add_points(self, ctx, *, name):
         """Fetch current prices from Data Project API.
