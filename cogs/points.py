@@ -1,8 +1,9 @@
+from __future__ import print_function
+
 import discord
 from discord.ext import commands
 import configparser
 import os
-from __future__ import print_function
 import os.path
 import json
 import gspread
