@@ -63,7 +63,7 @@ class FetchPrice(commands.Cog):
         self.itemList = os.path.dirname(currentPath) + "/item_data.json"
 
     @commands.command(
-        aliases=["price", "quick", "yoba"]
+        aliases=["price", "quick", "yobana",]
     )
     async def prices(self, ctx, *, item):
         """Fetch current prices from Data Project API.

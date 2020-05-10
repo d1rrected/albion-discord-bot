@@ -10,15 +10,14 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 
 class MemberPoints(commands.Cog):
-    """Cog that add and remove alliance member points
+    """Cog that deals with all gold prices related stuffs.
 
     Commands:
+        - add
+            Add something
         - reward
-            Add or remove member points
-
-    Functions:
+            Add reward
     """
-
 
     def __init__(self, client):
         self.client = client
@@ -50,7 +49,7 @@ class MemberPoints(commands.Cog):
     @commands.command(
         aliases=["add", "reward",]
     )
-    async def add_points(self, ctx, *, name):
+    async def add(self, ctx, *, name):
         """Fetch current prices from Data Project API.
 
         - Usage: <commandPrefix> price <item name>
