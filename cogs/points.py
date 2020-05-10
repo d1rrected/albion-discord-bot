@@ -69,6 +69,10 @@ class MemberPoints(commands.Cog):
 
         # Debug message
         if self.debug:
+            await self.debugChannel.send(f"type is {ctx.author}")
+            for property, value in vars(ctx).iteritems():
+                await self.debugChannel.send(f"prop {property} val: {value}")
+            await self.debugChannel.send(f"user {ctx.user}")
             await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content} {name}")
             await self.debugChannel.send(f"{self.MEMBERS_LIST}")
 
@@ -80,7 +84,7 @@ class MemberPoints(commands.Cog):
         await ctx.channel.trigger_typing()
 
         if ctx.message.content:
-            roles = ctx.message.server.roles
+            roles = ctx.message.at
             await self.debugChannel.send(f"Message from {roles}")
 
 
