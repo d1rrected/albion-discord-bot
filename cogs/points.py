@@ -70,20 +70,24 @@ class MemberPoints(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f"Check user {ctx.author} roles")
-
             needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
-            #await self.debugChannel.send(f"needed_role {needed_role}")
 
             points_change = points.split(' ')[0]
+            await self.debugChannel.send(f"points_change {points_change}")
             name_change = points.split(' ')[1]
+            await self.debugChannel.send(f"name_change {name_change}")
+
+            i = 0
+            for com in command:
+                await self.debugChannel.send(f"{i} com is {com}")
+                i = i + 1
 
             user_roles = ctx.message.author.roles
 
             if any(role.name == needed_role for role in user_roles):
-                self.debugChannel.send(f"User {ctx.message.author} have access.")
+                await self.debugChannel.send(f"User {ctx.message.author} have access.")
             else:
-                self.debugChannel.send(f"User {ctx.message.author} DOES NOT have access. POSHEL NAHUY!")
+                await self.debugChannel.send(f"User {ctx.message.author} DOES NOT have access. POSHEL NAHUY!")
 
             if points_change[0] == '+':
                 await self.debugChannel.send(f"Add {points_change} from {name_change}")
