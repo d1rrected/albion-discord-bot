@@ -45,7 +45,10 @@ class MemberPoints(commands.Cog):
         self.CREDS = json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))
         with open('gcreds.json', 'w') as fp:
             json.dump(self.CREDS, fp)
-        self.SHEET = client.open("albion_choppers_member_points").sheet1
+        creds = ServiceAccountCredentials.from_json_keyfile_name('gcreds.json', self.SCOPES)
+        glient = gspread.authorize(creds)
+
+        self.SHEET = glient.open("albion_choppers_member_points").sheet1
         self.MEMBERS_LIST = self.SHEET.get_all_records()
 
     @commands.command(
