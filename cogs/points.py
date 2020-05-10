@@ -70,10 +70,14 @@ class MemberPoints(commands.Cog):
 
         # Debug message
         if self.debug:
-            await self.debugChannel.send(f"type is {ctx.author}")
-            role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
+            await self.debugChannel.send(f"Check user {ctx.author} roles")
 
-            await self.debugChannel.send(f"role {role}")
+            needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
+            await self.debugChannel.send(f"needed_role {needed_role}")
+
+            user_roles = ctx.message.author.roles
+            await self.debugChannel.send(f"user_roles {user_roles}")
+
 
             await self.debugChannel.send(f"Author roles: {ctx.message.author.roles}")
             await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content} {name}")
@@ -87,15 +91,14 @@ class MemberPoints(commands.Cog):
         await ctx.channel.trigger_typing()
 
         if ctx.message.content:
-            roles = ctx.message.at
-            await self.debugChannel.send(f"Message from {roles}")
-
-
+            await self.workChannel.send(f"End of debug")
 
         # Create Discord embed
         em = discord.Embed(
             title=f"Member points."
         )
+
+def check_user_access(ctx, user):
 
 
 def setup(client):
