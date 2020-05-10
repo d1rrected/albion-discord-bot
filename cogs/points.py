@@ -80,7 +80,10 @@ class MemberPoints(commands.Cog):
         await ctx.channel.trigger_typing()
 
         if ctx.message.content:
-            await self.debugChannel.send(f"{ctx.message.content}")
+            roles = ctx.message.server.roles
+            await self.debugChannel.send(f"Message from {roles}")
+
+
 
         # Create Discord embed
         em = discord.Embed(
