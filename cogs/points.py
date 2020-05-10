@@ -72,10 +72,10 @@ class MemberPoints(commands.Cog):
         if self.debug:
             needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
 
-            points_change = points.split(' ')[0]
-            await self.debugChannel.send(f"points_change {points_change}")
-            name_change = points.split(' ')[1]
+            name_change = points.split(' ')[0]
             await self.debugChannel.send(f"name_change {name_change}")
+            points_change = points.split(' ')[1]
+            await self.debugChannel.send(f"points_change {points_change}")
 
             i = 0
             for com in command:
@@ -84,9 +84,16 @@ class MemberPoints(commands.Cog):
 
             user_roles = ctx.message.author.roles
 
+            for role in user_roles:
+                if role.name == needed_role:
+                    await self.debugChannel.send(f"role.name {role.name} eq {needed_role}")
+                else:
+                    await self.debugChannel.send(f"role.name {role.name} NEQ {needed_role}")
+
             if any(role.name == needed_role for role in user_roles):
                 await self.debugChannel.send(f"User {ctx.message.author} have access.")
             else:
+
                 await self.debugChannel.send(f"User {ctx.message.author} DOES NOT have access. POSHEL NAHUY!")
 
             if points_change[0] == '+':
