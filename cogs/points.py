@@ -79,6 +79,8 @@ class MemberPoints(commands.Cog):
 
         await ctx.channel.trigger_typing()
 
+        if ctx.message.content:
+            await self.debugChannel.send(f"{ctx.message.content}")
 
         # Create Discord embed
         em = discord.Embed(
