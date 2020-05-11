@@ -50,7 +50,6 @@ class MemberPoints(commands.Cog):
         glient = gspread.authorize(creds)
 
         self.SHEET = glient.open("albion_choppers_member_points").sheet1
-        self.MEMBERS_LIST = self.SHEET.get_all_records()
 
     @commands.command(
         aliases=["add", "reward", "отсыпь"]
@@ -110,7 +109,8 @@ class MemberPoints(commands.Cog):
         return self.members_list
 
     def get_member(self, name):
-        member = list(filter(lambda person: person['Name'] == name, self.members_list))
+        member_list = self.SHEET.get_all_records()
+        member = list(filter(lambda person: person['Name'] == name, member_list))
         return member[0]
 
     def get_user_points(self, name):
@@ -120,7 +120,7 @@ class MemberPoints(commands.Cog):
     def add_user_points(self, name, points):
         cell = self.SHEET.find(name)
         current_points = int(self.SHEET.cell(cell.row, cell.col+2).value)
-        new_points = current_points + points
+        new_points = current_points + int(points)
         self.SHEET.update_cell(cell.row, cell.col+2, new_points)
 
     def remove_points(self, name, points):
