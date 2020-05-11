@@ -41,7 +41,7 @@ class MemberPoints(commands.Cog):
         self.debug = configs["General"].getboolean("debug")
 
         # API URLs
-        self.SCOPES = ["https://www.googleapis.com/auth/spreadSHEETs", "https://www.googleapis.com/auth/drive.file",
+        self.SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file",
                        "https://www.googleapis.com/auth/drive"]
         self.CREDS = json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))
         with open('gcreds.json', 'w') as fp:
