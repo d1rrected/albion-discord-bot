@@ -64,17 +64,22 @@ class MemberPoints(commands.Cog):
         - Plots 7 days historical prices.
         """
 
+        await ctx.channel.trigger_typing()
+
         # Get command (price or quick)
         user_access = self.check_role(ctx)
         name_change = message.split(' ')[0]
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
 
+
         if user_access:
             if points_change[0] == '+':
                 self.add_user_points(name_change, points_change_num)
             if points_change[0] == '-':
                 self.remove_points(name_change, points_change_num)
+            new_points = self.get_user_points(name_change)
+            await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
         else:
             await self.debugChannel.send(f"You HAVE NOT access. POSHEL NAHUY!")
         # Debug message
@@ -90,7 +95,7 @@ class MemberPoints(commands.Cog):
             if ctx.channel.id not in self.workChannel:
                 return
 
-        #await ctx.channel.trigger_typing()
+
 
         # Create Discord embed
         #em = discord.Embed(
@@ -103,7 +108,7 @@ class MemberPoints(commands.Cog):
     async def get_points(self, ctx, *, message):
         name_change = message.split(' ')[0]
         user_points = self.get_user_points(name_change)
-        await self.debugChannel.send(f"User {name_change} points is {user_points}")
+        await ctx.send(f"Ля какой - {name_change} - {user_points} очка")
 
     def get_all_members(self):
         return self.members_list
@@ -114,8 +119,8 @@ class MemberPoints(commands.Cog):
         return member[0]
 
     def get_user_points(self, name):
-            member = self.get_member(name)
-            return member["Points"]
+        member = self.get_member(name)
+        return member["Points"]
 
     def add_user_points(self, name, points):
         cell = self.SHEET.find(name)
