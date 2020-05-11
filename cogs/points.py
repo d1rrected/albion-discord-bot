@@ -9,7 +9,7 @@ import json
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-officer_role = "@yoba_admin"
+officer_role = "@admin"
 
 class MemberPoints(commands.Cog):
     """Cog that add and remove alliance member points
