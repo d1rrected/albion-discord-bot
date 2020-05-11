@@ -106,6 +106,13 @@ class MemberPoints(commands.Cog):
         user_points = self.get_user_points(name_change)
         await self.debugChannel.send(f"User {name_change} points is {user_points}")
 
+    def get_all_members(self):
+        return self.members_list
+
+    def get_member(self, name):
+        member = list(filter(lambda person: person['Name'] == name, self.members_list))
+        return member[0]
+
     def get_user_points(self, name):
             member = self.get_member(name)
             return member["Points"]
