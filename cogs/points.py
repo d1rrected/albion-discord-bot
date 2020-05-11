@@ -66,7 +66,7 @@ class MemberPoints(commands.Cog):
         """
 
         # Get command (price or quick)
-        user_access = check_role(ctx)
+        user_access = self.check_role(ctx)
         name_change = message.split(' ')[0]
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
@@ -125,14 +125,11 @@ class MemberPoints(commands.Cog):
 
 
 
-def check_role(ctx):
-    needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
-    user_roles = ctx.message.author.roles
-    access = any(str(role.name) == str(needed_role) for role in user_roles)
-    return access
-
-def add_points():
-
+    def check_role(ctx):
+        needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
+        user_roles = ctx.message.author.roles
+        access = any(str(role.name) == str(needed_role) for role in user_roles)
+        return access
 
 def setup(client):
     client.add_cog(MemberPoints(client))
