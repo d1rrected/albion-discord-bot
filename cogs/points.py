@@ -9,7 +9,7 @@ import json
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-officer_role = "@admin"
+officer_role = "@yoba_admin"
 
 
 class MemberPoints(commands.Cog):
