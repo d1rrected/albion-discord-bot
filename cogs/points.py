@@ -11,6 +11,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 officer_role = "@admin"
 
+
 class MemberPoints(commands.Cog):
     """Cog that add and remove alliance member points
 
@@ -20,7 +21,6 @@ class MemberPoints(commands.Cog):
 
     Functions:
     """
-
 
     def __init__(self, client):
         self.client = client
@@ -55,7 +55,7 @@ class MemberPoints(commands.Cog):
     @commands.command(
         aliases=["add", "reward", "отсыпь"]
     )
-    async def add_points(self, ctx, *, points):
+    async def process_user(self, ctx, *, message):
         """Fetch current prices from Data Project API.
 
         - Usage: <commandPrefix> price <item name>
@@ -66,52 +66,73 @@ class MemberPoints(commands.Cog):
         """
 
         # Get command (price or quick)
-        command = ctx.message.content.split()
+        user_access = check_role(ctx)
+        name_change = message.split(' ')[0]
+        points_change = message.split(' ')[1]
+        points_change_num = points_change[1:]
 
-        # Debug message
-        if self.debug:
-            needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
-
-            name_change = points.split(' ')[0]
-            await self.debugChannel.send(f"name_change {name_change}")
-            points_change = points.split(' ')[1]
-            await self.debugChannel.send(f"points_change {points_change}")
-
-            i = 0
-            for com in command:
-                await self.debugChannel.send(f"{i} com is {com}")
-                i = i + 1
-
-            user_roles = ctx.message.author.roles
-
-            if any(str(role.name) == str(needed_role) for role in user_roles):
-                await self.debugChannel.send(f"User {ctx.message.author} have access.")
-            else:
-                await self.debugChannel.send(f"User {ctx.message.author} DOES NOT have access. POSHEL NAHUY!")
-
+        if user_access:
             if points_change[0] == '+':
-                await self.debugChannel.send(f"Add {points_change} to {name_change}")
-
+                self.add_user_points(name_change, points_change_num)
             if points_change[0] == '-':
-                await self.debugChannel.send(f"Remove {points_change} to {name_change}")
-            #await self.debugChannel.send(f"user_roles {user_roles}")
+                self.remove_points(name_change, points_change_num)
+        else:
+            await self.debugChannel.send(f"You HAVE NOT access. POSHEL NAHUY!")
+        # Debug message
+        #if self.debug:
+        #    await self.debugChannel.send(f"user_roles {user_roles}")
 
-
-            #await self.debugChannel.send(f"Author roles: {ctx.message.author.roles}")
-            #await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content} {name}")
-            #await self.debugChannel.send(f"{self.MEMBERS_LIST}")
+            # await self.debugChannel.send(f"Author roles: {ctx.message.author.roles}")
+            # await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content} {name}")
+            # await self.debugChannel.send(f"{self.MEMBERS_LIST}")
 
         # Check if in workChannel
         if self.onlyWork:
             if ctx.channel.id not in self.workChannel:
                 return
 
-        await ctx.channel.trigger_typing()
+        #await ctx.channel.trigger_typing()
 
         # Create Discord embed
-        em = discord.Embed(
-            title=f"Member points."
-        )
+        #em = discord.Embed(
+        #    title=f"Member points."
+        #)
+
+    @commands.command(
+        aliases=["get"]
+    )
+    async def get_points(self, ctx, *, message):
+        name_change = message.split(' ')[0]
+        user_points = self.get_user_points(name_change)
+        await self.debugChannel.send(f"User {name_change} points is {user_points}")
+
+
+    def get_user_points(self, name):
+            member = self.get_member(name)
+            return member["Points"]
+
+    def add_user_points(self, name, points):
+        cell = self.sheet.find(name)
+        current_points = int(self.sheet.cell(cell.row, cell.col+2).value)
+        new_points = current_points + points
+        self.sheet.update_cell(cell.row, cell.col+2, new_points)
+
+    def remove_points(self, name, points):
+        cell = self.sheet.find(name)
+        current_points = int(self.sheet.cell(cell.row, cell.col+2).value)
+        new_points = current_points - points
+        self.sheet.update_cell(cell.row, cell.col+2, new_points)
+
+
+
+def check_role(ctx):
+    needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
+    user_roles = ctx.message.author.roles
+    access = any(str(role.name) == str(needed_role) for role in user_roles)
+    return access
+
+def add_points():
+
 
 def setup(client):
     client.add_cog(MemberPoints(client))
