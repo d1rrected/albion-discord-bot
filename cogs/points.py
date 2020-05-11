@@ -87,20 +87,23 @@ class MemberPoints(commands.Cog):
             for role in user_roles:
                 if role.name == needed_role:
                     await self.debugChannel.send(f"role.name {role.name} eq {needed_role}")
+                    type(role.name)
+                    type(needed_role)
                 else:
                     await self.debugChannel.send(f"role.name {role.name} NEQ {needed_role}")
+
+            rolename_w = role.name
 
             if any(role.name == needed_role for role in user_roles):
                 await self.debugChannel.send(f"User {ctx.message.author} have access.")
             else:
-
                 await self.debugChannel.send(f"User {ctx.message.author} DOES NOT have access. POSHEL NAHUY!")
 
             if points_change[0] == '+':
-                await self.debugChannel.send(f"Add {points_change} from {name_change}")
+                await self.debugChannel.send(f"Add {points_change} to {name_change}")
 
             if points_change[0] == '-':
-                await self.debugChannel.send(f"Remove {points_change} from {name_change}")
+                await self.debugChannel.send(f"Remove {points_change} to {name_change}")
             #await self.debugChannel.send(f"user_roles {user_roles}")
 
 
