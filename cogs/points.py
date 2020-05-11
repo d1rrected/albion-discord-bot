@@ -126,7 +126,7 @@ class MemberPoints(commands.Cog):
     def remove_points(self, name, points):
         cell = self.SHEET.find(name)
         current_points = int(self.SHEET.cell(cell.row, cell.col+2).value)
-        new_points = current_points - points
+        new_points = current_points - int(points)
         self.SHEET.update_cell(cell.row, cell.col+2, new_points)
 
     def check_role(self, ctx):
