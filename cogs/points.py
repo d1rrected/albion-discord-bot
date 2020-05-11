@@ -87,8 +87,10 @@ class MemberPoints(commands.Cog):
             for role in user_roles:
                 if role.name == needed_role:
                     await self.debugChannel.send(f"role.name {role.name} eq {needed_role}")
-                    type(role.name)
-                    type(needed_role)
+                    r_t = type(role.name)
+                    await self.debugChannel.send(f"r_t {r_t}.")
+                    r_t = type(needed_role)
+                    await self.debugChannel.send(f"r_t {r_t}.")
                 else:
                     await self.debugChannel.send(f"role.name {role.name} NEQ {needed_role}")
 
