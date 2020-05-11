@@ -106,7 +106,6 @@ class MemberPoints(commands.Cog):
         user_points = self.get_user_points(name_change)
         await self.debugChannel.send(f"User {name_change} points is {user_points}")
 
-
     def get_user_points(self, name):
             member = self.get_member(name)
             return member["Points"]
@@ -123,9 +122,7 @@ class MemberPoints(commands.Cog):
         new_points = current_points - points
         self.sheet.update_cell(cell.row, cell.col+2, new_points)
 
-
-
-    def check_role(ctx):
+    def check_role(self, ctx):
         needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
         user_roles = ctx.message.author.roles
         access = any(str(role.name) == str(needed_role) for role in user_roles)
