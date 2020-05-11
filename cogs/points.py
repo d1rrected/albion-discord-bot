@@ -41,7 +41,7 @@ class MemberPoints(commands.Cog):
         self.debug = configs["General"].getboolean("debug")
 
         # API URLs
-        self.SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file",
+        self.SCOPES = ["https://www.googleapis.com/auth/spreadSHEETs", "https://www.googleapis.com/auth/drive.file",
                        "https://www.googleapis.com/auth/drive"]
         self.CREDS = json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))
         with open('gcreds.json', 'w') as fp:
@@ -111,16 +111,16 @@ class MemberPoints(commands.Cog):
             return member["Points"]
 
     def add_user_points(self, name, points):
-        cell = self.sheet.find(name)
-        current_points = int(self.sheet.cell(cell.row, cell.col+2).value)
+        cell = self.SHEET.find(name)
+        current_points = int(self.SHEET.cell(cell.row, cell.col+2).value)
         new_points = current_points + points
-        self.sheet.update_cell(cell.row, cell.col+2, new_points)
+        self.SHEET.update_cell(cell.row, cell.col+2, new_points)
 
     def remove_points(self, name, points):
-        cell = self.sheet.find(name)
-        current_points = int(self.sheet.cell(cell.row, cell.col+2).value)
+        cell = self.SHEET.find(name)
+        current_points = int(self.SHEET.cell(cell.row, cell.col+2).value)
         new_points = current_points - points
-        self.sheet.update_cell(cell.row, cell.col+2, new_points)
+        self.SHEET.update_cell(cell.row, cell.col+2, new_points)
 
     def check_role(self, ctx):
         needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
