@@ -84,19 +84,7 @@ class MemberPoints(commands.Cog):
 
             user_roles = ctx.message.author.roles
 
-            for role in user_roles:
-                if role.name == needed_role:
-                    await self.debugChannel.send(f"role.name {role.name} eq {needed_role}")
-                else:
-                    await self.debugChannel.send(f"role.name {role.name} NEQ {needed_role}")
-                    r_t = type(role.name)
-                    await self.debugChannel.send(f"r_t {r_t}.")
-                    r_t = type(needed_role)
-                    await self.debugChannel.send(f"r_t {r_t}.")
-
-            rolename_w = role.name
-
-            if any(role.name == needed_role for role in user_roles):
+            if any(str(role.name) == str(needed_role) for role in user_roles):
                 await self.debugChannel.send(f"User {ctx.message.author} have access.")
             else:
                 await self.debugChannel.send(f"User {ctx.message.author} DOES NOT have access. POSHEL NAHUY!")
