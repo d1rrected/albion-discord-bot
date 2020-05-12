@@ -52,7 +52,7 @@ class MemberPoints(commands.Cog):
         self.SHEET = glient.open("albion_choppers_member_points").sheet1
 
     @commands.command(
-        aliases=["add", "reward", "отсыпь"]
+        aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка", "корректировОЧКА"]
     )
     async def process_user(self, ctx, *, message):
         """Fetch current prices from Data Project API.
@@ -72,7 +72,6 @@ class MemberPoints(commands.Cog):
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
 
-
         if user_access:
             if points_change[0] == '+':
                 self.add_user_points(name_change, points_change_num)
@@ -82,13 +81,6 @@ class MemberPoints(commands.Cog):
             await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
         else:
             await self.debugChannel.send(f"You HAVE NOT access. POSHEL NAHUY!")
-        # Debug message
-        #if self.debug:
-        #    await self.debugChannel.send(f"user_roles {user_roles}")
-
-            # await self.debugChannel.send(f"Author roles: {ctx.message.author.roles}")
-            # await self.debugChannel.send(f"{ctx.author} -> {ctx.message.content} {name}")
-            # await self.debugChannel.send(f"{self.MEMBERS_LIST}")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -96,24 +88,25 @@ class MemberPoints(commands.Cog):
                 return
 
 
-
-        # Create Discord embed
-        #em = discord.Embed(
-        #    title=f"Member points."
-        #)
-
     @commands.command(
-        aliases=["get"]
+        aliases=["get", "покажи", "show"]
     )
     async def get_points(self, ctx, *, message):
         name_change = message.split(' ')[0]
         user_points = self.get_user_points(name_change)
         await ctx.send(f"Ля какой - {name_change} - {user_points} очка")
 
-    def get_all_members(self):
-        return self.members_list
 
-    def get_member(self, name):
+    @commands.command(
+        aliases=["my", "чё как"]
+    )
+    async def get_my_points(self, ctx, *, message):
+        name_change = str(ctx.message.author)
+        user_points = self.get_user_points(name_change)
+        await ctx.send(f"Ля какой - {name_change} - {user_points} очка")
+
+
+    async def get_member(self, name):
         member_list = self.SHEET.get_all_records()
         member = list(filter(lambda person: person['Name'] == name, member_list))
         return member[0]
@@ -121,6 +114,10 @@ class MemberPoints(commands.Cog):
     def get_user_points(self, name):
         member = self.get_member(name)
         return member["Points"]
+
+    def get_all_members(self):
+        member_list = self.SHEET.get_all_records()
+        return member_list
 
     def add_user_points(self, name, points):
         cell = self.SHEET.find(name)
