@@ -52,7 +52,7 @@ class MemberPoints(commands.Cog):
         self.SHEET = glient.open("albion_choppers_member_points").sheet1
 
     @commands.command(
-        aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка", "корректировОЧКА"]
+        aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
     )
     async def process_user(self, ctx, *, message):
         """Fetch current prices from Data Project API.
@@ -111,13 +111,16 @@ class MemberPoints(commands.Cog):
         member = list(filter(lambda person: person['Name'] == name, member_list))
         return member[0]
 
+
     def get_user_points(self, name):
         member = self.get_member(name)
         return member["Points"]
 
+
     def get_all_members(self):
         member_list = self.SHEET.get_all_records()
         return member_list
+
 
     def add_user_points(self, name, points):
         cell = self.SHEET.find(name)
@@ -125,11 +128,13 @@ class MemberPoints(commands.Cog):
         new_points = current_points + int(points)
         self.SHEET.update_cell(cell.row, cell.col+2, new_points)
 
+
     def remove_points(self, name, points):
         cell = self.SHEET.find(name)
         current_points = int(self.SHEET.cell(cell.row, cell.col+2).value)
         new_points = current_points - int(points)
         self.SHEET.update_cell(cell.row, cell.col+2, new_points)
+
 
     def check_role(self, ctx):
         needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
