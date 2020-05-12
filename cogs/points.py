@@ -10,6 +10,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 officer_role = "@yoba_admin"
+user_start_points = 800
 
 
 class MemberPoints(commands.Cog):
@@ -50,6 +51,15 @@ class MemberPoints(commands.Cog):
         glient = gspread.authorize(creds)
 
         self.SHEET = glient.open("albion_choppers_member_points").sheet1
+
+    @commands.command(
+        aliases=["register", "reg"]
+    )
+    async def register_user(self, ctx, *, message):
+        name_change = str(ctx.message.author)
+        user_points = user_start_points
+        self.SHEET.append_row(["{name_change}", "member", user_points])
+        await ctx.send(f"Ля какой - {name_change} - {user_points} очка")
 
     @commands.command(
         aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
@@ -105,12 +115,10 @@ class MemberPoints(commands.Cog):
         user_points = self.get_user_points(name_change)
         await ctx.send(f"Ля какой - {name_change} - {user_points} очка")
 
-
-    async def get_member(self, name):
+    def get_member(self, name):
         member_list = self.SHEET.get_all_records()
         member = list(filter(lambda person: person['Name'] == name, member_list))
         return member[0]
-
 
     def get_user_points(self, name):
         member = self.get_member(name)
