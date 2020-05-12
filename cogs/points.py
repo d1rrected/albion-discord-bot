@@ -86,7 +86,7 @@ class MemberPoints(commands.Cog):
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
 
-        if self.check_member(name_change):
+        if self.check_member(name_change) is not None:
             await ctx.send(f"{name_change} неизвестный пассажир")
             return
 
