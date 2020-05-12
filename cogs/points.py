@@ -55,7 +55,7 @@ class MemberPoints(commands.Cog):
     @commands.command(
         aliases=["register", "reg"]
     )
-    async def register_user(self, ctx, *, message):
+    async def register_user(self, ctx, *):
         name_change = str(ctx.message.author)
         user_points = user_start_points
         self.SHEET.append_row(["{name_change}", "member", user_points])
