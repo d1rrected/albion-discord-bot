@@ -59,7 +59,7 @@ class MemberPoints(commands.Cog):
         name_change = str(ctx.message.author.name)
 
         if self.check_member(name_change):
-            await ctx.send(f"{name_change} уже посчитан")
+            await ctx.send(f"{name_change} уже в базе, ёпта")
         else:
             user_points = user_start_points
             self.SHEET.append_row([name_change, "member", user_points])
@@ -85,6 +85,10 @@ class MemberPoints(commands.Cog):
         name_change = message.split(' ')[0]
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
+
+        if self.check_member(name_change):
+            await ctx.send(f"{name_change} неизвестный пассажир")
+            return
 
         if user_access:
             if points_change[0] == '+':
