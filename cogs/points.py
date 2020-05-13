@@ -127,7 +127,9 @@ class MemberPoints(commands.Cog):
 
     def check_member(self, name):
         member_list = self.SHEET.get_all_records()
+        await self.debugChannel.send(f"Search {name}")
         member_found = list(filter(lambda person: person['Name'] == name, member_list))
+        await self.debugChannel.send(f"member_found: {member_found}")
         if not member_found:
             return False
         else:
