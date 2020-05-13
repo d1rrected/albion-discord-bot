@@ -118,7 +118,7 @@ class MemberPoints(commands.Cog):
     @commands.command(
         aliases=["my", "чё как"]
     )
-    async def get_my_points(self, ctx, *, message):
+    async def get_my_points(self, ctx, *):
         name_change = str(ctx.message.author)
         user_points = self.get_user_points(name_change)
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
