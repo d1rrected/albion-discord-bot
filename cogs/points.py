@@ -125,9 +125,10 @@ class MemberPoints(commands.Cog):
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
 
-    def check_member(self, name):
+    async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
-        await self.debugChannel.send(f"Search {name}")
+        user_name = str(name)
+        await self.debugChannel.send(f"Search: {user_name}")
         member_found = list(filter(lambda person: person['Name'] == name, member_list))
         await self.debugChannel.send(f"member_found: {member_found}")
         if not member_found:
