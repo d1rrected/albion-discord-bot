@@ -129,7 +129,7 @@ class MemberPoints(commands.Cog):
         member_list = self.SHEET.get_all_records()
         user_name = str(name)
         await self.debugChannel.send(f"Search: {user_name}")
-        member_found = list(filter(lambda person: person['Name'] == name, member_list))
+        member_found = list(filter(lambda person: person['Name'] == user_name, member_list))
         await self.debugChannel.send(f"member_found: {member_found}")
         if not member_found:
             return False
