@@ -9,7 +9,7 @@ import json
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-officer_role = "@yoba_admin"
+officer_role = "@ОФИЦЕР"
 user_start_points = 800
 
 
@@ -59,7 +59,7 @@ class MemberPoints(commands.Cog):
         name_change = str(ctx.message.author.name)
 
         if self.check_member(name_change):
-            await ctx.send(f"{name_change} уже в базе, ёпта")
+            await ctx.send(f"{name_change} уже в базе")
         else:
             user_points = user_start_points
             self.SHEET.append_row([name_change, "Member", user_points])
@@ -87,7 +87,7 @@ class MemberPoints(commands.Cog):
         points_change_num = points_change[1:]
 
         if self.check_member(name_change) is not None:
-            await ctx.send(f"{name_change} неизвестный пассажир")
+            await ctx.send(f"{name_change} левый пассажир")
             return
 
         if user_access:
@@ -97,8 +97,6 @@ class MemberPoints(commands.Cog):
                 self.remove_points(name_change, points_change_num)
             new_points = self.get_user_points(name_change)
             await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
-        else:
-            await self.debugChannel.send(f"You HAVE NOT access. POSHEL NAHUY!")
 
         # Check if in workChannel
         if self.onlyWork:
