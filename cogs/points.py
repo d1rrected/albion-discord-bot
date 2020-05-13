@@ -58,7 +58,7 @@ class MemberPoints(commands.Cog):
     async def register_user(self, ctx):
         name_change = str(ctx.message.author.name)
 
-        if self.check_member(name_change):
+        if await self.check_member(name_change):
             await ctx.send(f"{name_change} уже в базе")
         else:
             user_points = user_start_points
@@ -86,7 +86,7 @@ class MemberPoints(commands.Cog):
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
 
-        if self.check_member(name_change) is not None:
+        if await self.check_member(name_change) is not None:
             await ctx.send(f"{name_change} левый пассажир")
             return
 
@@ -109,7 +109,7 @@ class MemberPoints(commands.Cog):
     )
     async def get_points(self, ctx, *, message):
         name_change = message.split(' ')[0]
-        if self.check_member(name_change) is not None:
+        if await self.check_member(name_change) is not None:
             await ctx.send(f"{name_change} левый пассажир")
             return
         user_points = self.get_user_points(name_change)
