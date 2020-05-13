@@ -62,7 +62,7 @@ class MemberPoints(commands.Cog):
             await ctx.send(f"{name_change} уже в базе, ёпта")
         else:
             user_points = user_start_points
-            self.SHEET.append_row([name_change, "member", user_points])
+            self.SHEET.append_row([name_change, "Member", user_points])
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
             
     @commands.command(
@@ -123,6 +123,7 @@ class MemberPoints(commands.Cog):
         user_points = self.get_user_points(name_change)
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
+
     def check_member(self, name):
         member_list = self.SHEET.get_all_records()
         member_found = list(filter(lambda person: person['Name'] == name, member_list))
@@ -131,10 +132,12 @@ class MemberPoints(commands.Cog):
         else:
             return True
 
+
     def get_member(self, name):
         member_list = self.SHEET.get_all_records()
         member = list(filter(lambda person: person['Name'] == name, member_list))
         return member[0]
+
 
     def get_user_points(self, name):
         member = self.get_member(name)
