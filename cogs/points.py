@@ -82,7 +82,7 @@ class MemberPoints(commands.Cog):
 
         # Get command (price or quick)
         user_access = self.check_role(ctx)
-        name_change = message.split(' ')[0]
+        name_change = message.split(' ')[0].replace("@", "")
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
 
