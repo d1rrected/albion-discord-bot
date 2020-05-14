@@ -83,23 +83,25 @@ class MemberPoints(commands.Cog):
         # Get command (price or quick)
         user_access = self.check_role(ctx)
 
-        await self.get_user_names(ctx)
+        mentions = ctx.message.mentions
 
-        name_change = message.split(' ')[0].replace("@", "")
+        names_for_change = self.get_mentioned_users(ctx)
+
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
 
-        if await self.check_member(name_change) is not None:
-            await ctx.send(f"{name_change} левый пассажир")
-            return
+        for name_change in names_for_change:
+            if await self.check_member(name_change) is not None:
+                await ctx.send(f"{name_change} левый пассажир")
+                return
 
-        if user_access:
-            if points_change[0] == '+':
-                self.add_user_points(name_change, points_change_num)
-            if points_change[0] == '-':
-                self.remove_points(name_change, points_change_num)
-            new_points = self.get_user_points(name_change)
-            await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
+            if user_access:
+                if points_change[0] == '+':
+                    self.add_user_points(name_change, points_change_num)
+                if points_change[0] == '-':
+                    self.remove_points(name_change, points_change_num)
+                new_points = self.get_user_points(name_change)
+                await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -127,12 +129,12 @@ class MemberPoints(commands.Cog):
         user_points = self.get_user_points(name_change)
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
-    async def get_user_names(self, ctx):
+    def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
-        for mem in mentions:
-            ob = mem.name
-            await self.inv_obj(ob)
-        return ctx.message.mentions
+        names = [str(mention.name) for mention in mentions]
+        for name in names:
+            self.inv_obj(name)
+        return names
 
     async def inv_obj(self, object):
         await self.debugChannel.send(f"object: {object}, type: {type(object)}")
