@@ -91,8 +91,8 @@ class MemberPoints(commands.Cog):
 
         for name_change in names_for_change:
             member_found = await self.check_member(name_change)
-            await self.inv_obj(member_found)
-            if await self.check_member(name_change) is not None:
+            await ctx.send(f"1. member_found = {member_found}")
+            if member_found is False:
                 await ctx.send(f"{name_change} левый пассажир")
                 return
 
@@ -141,18 +141,7 @@ class MemberPoints(commands.Cog):
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
         user_name = str(name).replace("@", "")
-        await self.inv_obj(user_name)
         member_found = list(filter(lambda person: str(person['Name']) == user_name, member_list))
-        await self.inv_obj(member_found)
-        #for person in member_list:
-        #    if str(person['Name']) == user_name:
-        #        await self.debugChannel.send(f"equals!")
-        #        await self.inv_obj(person['Name'])
-        #        await self.inv_obj(user_name)
-        #    else:
-        #        await self.debugChannel.send(f"NEQ!!!!!")
-        #        await self.inv_obj(person['Name'])
-        #        await self.inv_obj(user_name)
         if not member_found:
             return False
         else:
