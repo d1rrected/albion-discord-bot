@@ -83,7 +83,7 @@ class MemberPoints(commands.Cog):
         # Get command (price or quick)
         user_access = self.check_role(ctx)
 
-        await self.get_user_names(message)
+        await self.get_user_names(ctx)
 
         name_change = message.split(' ')[0].replace("@", "")
         points_change = message.split(' ')[1]
@@ -127,11 +127,11 @@ class MemberPoints(commands.Cog):
         user_points = self.get_user_points(name_change)
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
-    async def get_user_names(self, message):
-        mentions = message.mentions
+    async def get_user_names(self, ctx):
+        mentions = ctx.message.mentions
         for mem in mentions:
             await self.inv_obj(mem)
-        return message
+        return ctx.message.mentions
 
     async def inv_obj(self, object):
         await self.debugChannel.send(f"object: {object}, type: {type(object)}")
