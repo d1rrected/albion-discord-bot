@@ -127,6 +127,11 @@ class MemberPoints(commands.Cog):
     )
     async def get_my_points(self, ctx):
         name_change = str(ctx.message.author)
+        member_found = await self.check_member(ctx.message.author)
+        if member_found is False:
+            await ctx.send(f"{name_change} левый пассажир")
+            return
+
         user_points = self.get_user_points(name_change)
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
