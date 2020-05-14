@@ -101,7 +101,7 @@ class MemberPoints(commands.Cog):
                 if points_change[0] == '-':
                     self.remove_points(name_change, points_change_num)
                 new_points = self.get_user_points(name_change)
-                await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
+                await ctx.send(f"Ля какой - {name_change} - {new_points} очков")
             else:
                 await ctx.send(f"Ты не офицер, я тебя не знаю.")
 
