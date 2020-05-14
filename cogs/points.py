@@ -112,7 +112,7 @@ class MemberPoints(commands.Cog):
     @commands.command(
         aliases=["get", "покажи", "show"]
     )
-    async def get_points(self, ctx, *, message):
+    async def get_points(self, ctx):
         """Fetch current prices from Data Project API.
 
         - Usage: <commandPrefix> price <item name>
@@ -129,22 +129,19 @@ class MemberPoints(commands.Cog):
 
         names_for_change = self.get_mentioned_users(ctx)
 
-        points_change = re.search(r"[\+\-].\d*", message).group()
-        points_change_num = points_change[1:]
+        # for name_change in names_for_change:
+        #     member_found = await self.check_member(name_change)
+        #     if member_found is False:
+        #         await ctx.send(f"{name_change} левый пассажир")
+        #         return
 
-        for name_change in names_for_change:
-            member_found = await self.check_member(name_change)
-            if member_found is False:
-                await ctx.send(f"{name_change} левый пассажир")
-                return
-
-            if user_access:
-                if points_change[0] == '+':
-                    self.add_user_points(name_change, points_change_num)
-                if points_change[0] == '-':
-                    self.remove_points(name_change, points_change_num)
-                new_points = self.get_user_points(name_change)
-                await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
+        #     if user_access:
+        #         if points_change[0] == '+':
+        #             self.add_user_points(name_change, points_change_num)
+        #         if points_change[0] == '-':
+        #             self.remove_points(name_change, points_change_num)
+        #         new_points = self.get_user_points(name_change)
+        #         await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
 
         # Check if in workChannel
         if self.onlyWork:
