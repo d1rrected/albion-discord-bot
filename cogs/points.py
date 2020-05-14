@@ -92,7 +92,7 @@ class MemberPoints(commands.Cog):
         for name_change in names_for_change:
             member_found = await self.check_member(name_change)
             if member_found is False:
-                await ctx.send(f"{name_change} левый пассажир")
+                await ctx.send(f"{name_change} не найден, какой-то левый пассажир")
                 return
 
             if user_access:
@@ -103,7 +103,7 @@ class MemberPoints(commands.Cog):
                 new_points = self.get_user_points(name_change)
                 await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
             else:
-                await ctx.send(f"Ты кто такой, я тебя не знаю.")
+                await ctx.send(f"Ты не офицер, я тебя не знаю.")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -117,13 +117,10 @@ class MemberPoints(commands.Cog):
     async def get_points(self, ctx, *, message):
         names_change_list = self.get_mentioned_users(ctx)
         user_access = self.check_role(ctx)
-        if user_access is False:
-            await ctx.send(f"Ты кто такой, я тебя не знаю.")
-            return
         for name_change in names_change_list:
             member_found = await self.check_member(name_change)
             if member_found is False:
-                await ctx.send(f"{name_change} левый пассажир")
+                await ctx.send(f"{name_change} не найден, какой-то левый пассажир")
                 return
             user_points = self.get_user_points(name_change)
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
@@ -156,6 +153,8 @@ class MemberPoints(commands.Cog):
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
         user_name = str(name).replace("@", "")
+        if self.debug:
+            await self.debugChannel.send(f"UserName = {user_name} and must be person['Name'] = {person['Name']}")
         member_found = list(filter(lambda person: str(person['Name']) == user_name, member_list))
         if not member_found:
             return False
@@ -193,9 +192,12 @@ class MemberPoints(commands.Cog):
         self.SHEET.update_cell(cell.row, cell.col+2, new_points)
 
 
-    def check_role(self, ctx):
+    async def check_role(self, ctx):
         needed_role = discord.utils.find(lambda r: r.name in officer_roles, ctx.message.guild.roles)
         user_roles = ctx.message.author.roles
+        if self.debug:
+            await self.debugChannel.send(f"user_roles: {user_roles}")
+            await self.debugChannel.send(f"user_roles: {user_roles}")
         access = any(str(role.name) == str(needed_role) for role in user_roles)
         return access
 
