@@ -140,7 +140,7 @@ class MemberPoints(commands.Cog):
 
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
-        names = [str(mention.name) for mention in mentions]
+        names = [str(mention.display_name) for mention in mentions]
         if names.count == 1:
             return names[0]
         return names
