@@ -92,7 +92,7 @@ class MemberPoints(commands.Cog):
         for name_change in names_for_change:
             member_found = await self.check_member(name_change)
             if member_found is False:
-                await ctx.send(f"{name_change} не найден, какой-то левый пассажир")
+                await ctx.send(f"{name_change} не найден.")
                 return
 
             if user_access:
@@ -120,7 +120,7 @@ class MemberPoints(commands.Cog):
         for name_change in names_change_list:
             member_found = await self.check_member(name_change)
             if member_found is False:
-                await ctx.send(f"{name_change} не найден, какой-то левый пассажир")
+                await ctx.send(f"{name_change} не найден")
                 return
             user_points = self.get_user_points(name_change)
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
@@ -133,7 +133,7 @@ class MemberPoints(commands.Cog):
         name_change = str(ctx.message.author.name)
         member_found = await self.check_member(name_change)
         if member_found is False:
-            await ctx.send(f"{name_change} левый пассажир")
+            await ctx.send(f"{name_change} не найден")
             return
 
         user_points = self.get_user_points(name_change)
@@ -197,7 +197,7 @@ class MemberPoints(commands.Cog):
         user_roles = ctx.message.author.roles
         if self.debug:
             await self.debugChannel.send(f"user_roles: {user_roles}")
-            await self.debugChannel.send(f"user_roles: {user_roles}")
+            await self.debugChannel.send(f"officer_roles: {officer_roles}")
         access = any(str(role.name) == str(needed_role) for role in user_roles)
         return access
 
