@@ -116,7 +116,6 @@ class MemberPoints(commands.Cog):
     )
     async def get_points(self, ctx, *, message):
         names_change_list = self.get_mentioned_users(ctx)
-        user_access = await self.check_role(ctx)
         for name_change in names_change_list:
             member_found = await self.check_member(name_change)
             if member_found is False:
@@ -154,7 +153,7 @@ class MemberPoints(commands.Cog):
         member_list = self.SHEET.get_all_records()
         user_name = str(name).replace("@", "")
         if self.debug:
-            await self.debugChannel.send(f"UserName = {user_name} and must be person['Name'] = {person['Name']}")
+            await self.debugChannel.send(f"UserName = {user_name}")
         member_found = list(filter(lambda person: str(person['Name']) == user_name, member_list))
         if not member_found:
             return False
