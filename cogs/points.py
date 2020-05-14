@@ -128,8 +128,13 @@ class MemberPoints(commands.Cog):
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
     async def get_user_names(self, message):
-        await self.debugChannel.send(f"message: {message}, type: {type(message)}")
+        message_parts = message.split()
+        for mem in message_parts:
+            await self.inv_obj(mem)
         return message
+
+    async def inv_obj(self, object):
+        await self.debugChannel.send(f"object: {object}, type: {type(object)}")
 
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
