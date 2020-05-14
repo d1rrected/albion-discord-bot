@@ -82,6 +82,9 @@ class MemberPoints(commands.Cog):
 
         # Get command (price or quick)
         user_access = self.check_role(ctx)
+
+        await self.get_user_names(message)
+
         name_change = message.split(' ')[0].replace("@", "")
         points_change = message.split(' ')[1]
         points_change_num = points_change[1:]
@@ -124,13 +127,14 @@ class MemberPoints(commands.Cog):
         user_points = self.get_user_points(name_change)
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
+    async def get_user_names(self, message):
+        await self.debugChannel.send(f"message: {message}, type: {type(message)}")
+        return message
 
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
         user_name = str(name).replace("@", "")
         member_found = list(filter(lambda person: person['Name'] == user_name, member_list))
-        await self.debugChannel.send(f"member_found: {member_found}")
-        await self.debugChannel.send(f"user_name: {user_name}, type: {type(user_name)}")
         for person in member_list:
             await self.debugChannel.send(f"person['Name']: {person['Name']}, type: {type(person['Name'])}")
         if not member_found:
