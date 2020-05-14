@@ -114,17 +114,17 @@ class MemberPoints(commands.Cog):
     )
     async def get_points(self, ctx, *, message):
         names_for_change = self.get_mentioned_users(ctx)
-        await self.inv_obj(name_change)
+        await self.inv_obj(names_for_change)
         #for name_change in names_for_change:
         #    await self.inv_obj(name_change)
-            #member_found = await self.check_member(name_change)
+        #member_found = await self.check_member(name_change)
 
-            #if member_found is False:
-            #    await ctx.send(f"{name_change} левый пассажир")
-            #    continue
-            #else:
-            #    user_points = self.get_user_points(name_change)
-            #    await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
+        #if member_found is False:
+        #    await ctx.send(f"{name_change} левый пассажир")
+        #    continue
+        #else:
+        #    user_points = self.get_user_points(name_change)
+        #    await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
 
     @commands.command(
