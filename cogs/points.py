@@ -102,6 +102,8 @@ class MemberPoints(commands.Cog):
                     self.remove_points(name_change, points_change_num)
                 new_points = self.get_user_points(name_change)
                 await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
+            else:
+                await ctx.send(f"Ты кто такой, я тебя не знаю.")
 
         # Check if in workChannel
         if self.onlyWork:
@@ -116,6 +118,7 @@ class MemberPoints(commands.Cog):
         names_change_list = self.get_mentioned_users(ctx)
         user_access = self.check_role(ctx)
         if user_access is False:
+            await ctx.send(f"Ты кто такой, я тебя не знаю.")
             return
         for name_change in names_change_list:
             member_found = await self.check_member(name_change)
