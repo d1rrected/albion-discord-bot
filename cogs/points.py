@@ -91,7 +91,6 @@ class MemberPoints(commands.Cog):
 
         for name_change in names_for_change:
             member_found = await self.check_member(name_change)
-            await ctx.send(f"1. member_found = {member_found}")
             if member_found is False:
                 await ctx.send(f"{name_change} левый пассажир")
                 return
@@ -115,7 +114,8 @@ class MemberPoints(commands.Cog):
     )
     async def get_points(self, ctx, *, message):
         name_change = message.split(' ')[0]
-        if await self.check_member(name_change) is not None:
+        member_found = await self.check_member(name_change)
+        if member_found is False:
             await ctx.send(f"{name_change} левый пассажир")
             return
         user_points = self.get_user_points(name_change)
