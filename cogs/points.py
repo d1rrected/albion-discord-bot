@@ -129,9 +129,10 @@ class MemberPoints(commands.Cog):
         member_list = self.SHEET.get_all_records()
         user_name = str(name)
         member_found = list(filter(lambda person: person['Name'] == user_name, member_list))
-        await self.debugChannel.send(f"user_name: {user_name}, type: {type(user_name)}")
-        await self.debugChannel.send(f"person['Name']: {person['Name']}, type: {type(person['Name'])}")
         await self.debugChannel.send(f"member_found: {member_found}")
+        await self.debugChannel.send(f"user_name: {user_name}, type: {type(user_name)}")
+        for person in member_list:
+            await self.debugChannel.send(f"person['Name']: {person['Name']}, type: {type(person['Name'])}")
         if not member_found:
             return False
         else:
