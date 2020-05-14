@@ -7,6 +7,7 @@ import os
 import os.path
 import json
 import gspread
+import re
 from oauth2client.service_account import ServiceAccountCredentials
 
 officer_role = "@ОФИЦЕР"
@@ -83,11 +84,9 @@ class MemberPoints(commands.Cog):
         # Get command (price or quick)
         user_access = self.check_role(ctx)
 
-        mentions = ctx.message.mentions
-
         names_for_change = self.get_mentioned_users(ctx)
 
-        points_change = message.split(' ')[1]
+        points_change = re.search(r"[\+\-].\d*", message).group()
         points_change_num = points_change[1:]
 
         for name_change in names_for_change:
@@ -132,8 +131,6 @@ class MemberPoints(commands.Cog):
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
         names = [str(mention.name) for mention in mentions]
-        for name in names:
-            self.inv_obj(name)
         return names
 
     async def inv_obj(self, object):
@@ -142,9 +139,10 @@ class MemberPoints(commands.Cog):
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
         user_name = str(name).replace("@", "")
+        await self.inv_obj(user_name)
         member_found = list(filter(lambda person: person['Name'] == user_name, member_list))
         for person in member_list:
-            await self.debugChannel.send(f"person['Name']: {person['Name']}, type: {type(person['Name'])}")
+            await self.inv_obj(person['Name'])
         if not member_found:
             return False
         else:
