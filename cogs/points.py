@@ -126,8 +126,8 @@ class MemberPoints(commands.Cog):
         aliases=["my", "чё как", "my points", "points", "очки"]
     )
     async def get_my_points(self, ctx):
-        name_change = str(ctx.message.author)
-        member_found = await self.check_member(ctx.message.author)
+        name_change = str(ctx.message.author.name)
+        member_found = await self.check_member(name_change)
         if member_found is False:
             await ctx.send(f"{name_change} левый пассажир")
             return
