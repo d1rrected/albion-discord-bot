@@ -108,50 +108,25 @@ class MemberPoints(commands.Cog):
             if ctx.channel.id not in self.workChannel:
                 return
 
-    # @commands.command(
-    #     aliases=["get", "покажи", "show"]
-    # )
-    # async def get_points(self, ctx):
-    #     """Fetch current prices from Data Project API.
 
-    #     - Usage: <commandPrefix> price <item name>
-    #     - Item name can also be its ID
-    #     - Uses difflib for item name recognition.
-    #     - Outputs as Discord Embed with thumbnail.
-    #     - Plots 7 days historical prices.
-    #     """
-
-    #     await ctx.channel.trigger_typing()
-
-    #     # Get command (price or quick)
-    #     user_access = self.check_role(ctx)
-
-    #     names_for_change = self.get_mentioned_users(ctx)
-
-    #     # for name_change in names_for_change:
-    #     #     member_found = await self.check_member(name_change)
-    #     #     if member_found is False:
-    #     #         await ctx.send(f"{name_change} левый пассажир")
-    #     #         return
-
-    #     #     if user_access:
-    #     #         if points_change[0] == '+':
-    #     #             self.add_user_points(name_change, points_change_num)
-    #     #         if points_change[0] == '-':
-    #     #             self.remove_points(name_change, points_change_num)
-    #     #         new_points = self.get_user_points(name_change)
-    #     #         await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
-
-    #     # Check if in workChannel
-    #     if self.onlyWork:
-    #         if ctx.channel.id not in self.workChannel:
-    #             return
+    @commands.command(
+        aliases=["get", "покажи", "show"]
+    )
+    async def get_points(self, ctx, *, message):
+        name_change = self.get_mentioned_users(ctx)
+        await self.inv_obj(name_change)
+        member_found = await self.check_member(name_change)
+        if member_found is False:
+            await ctx.send(f"{name_change} левый пассажир")
+            return
+        user_points = self.get_user_points(name_change)
+        await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
 
     @commands.command(
-        aliases=["my", "чё как", "my points", "points", "очки", "my"]
+        aliases=["my", "чё как", "my points", "points", "очки"]
     )
-    async def aget_my_points(self, ctx):
+    async def get_my_points(self, ctx):
         name_change = str(ctx.message.author.name)
         member_found = await self.check_member(name_change)
         if member_found is False:
@@ -164,6 +139,8 @@ class MemberPoints(commands.Cog):
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
         names = [str(mention.name) for mention in mentions]
+        if names.count == 1:
+            return names[0]
         return names
 
 
