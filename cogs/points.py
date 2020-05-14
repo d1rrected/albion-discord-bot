@@ -130,7 +130,7 @@ class MemberPoints(commands.Cog):
     async def get_user_names(self, ctx):
         mentions = ctx.message.mentions
         for mem in mentions:
-            await self.inv_obj(mem)
+            await self.inv_obj(mem['nick'])
         return ctx.message.mentions
 
     async def inv_obj(self, object):
