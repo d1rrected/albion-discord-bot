@@ -127,7 +127,7 @@ class MemberPoints(commands.Cog):
 
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
-        user_name = str(name)
+        user_name = str(name).replace("@", "")
         member_found = list(filter(lambda person: person['Name'] == user_name, member_list))
         await self.debugChannel.send(f"member_found: {member_found}")
         await self.debugChannel.send(f"user_name: {user_name}, type: {type(user_name)}")
