@@ -54,7 +54,7 @@ class MemberPoints(commands.Cog):
         self.SHEET = glient.open("albion_choppers_member_points").sheet1
 
     @commands.command(
-        aliases=["register", "reg"]
+        aliases=["register", "reg", ""]
     )
     async def register_user(self, ctx):
         name_change = str(ctx.message.author.name)
