@@ -57,7 +57,7 @@ class MemberPoints(commands.Cog):
         aliases=["register", "reg"]
     )
     async def register_user(self, ctx):
-        name_change = str(ctx.message.author.name)
+        name_change = str(ctx.message.author.display_name)
 
         if await self.check_member(name_change):
             await ctx.send(f"{name_change} уже в базе")
@@ -129,7 +129,7 @@ class MemberPoints(commands.Cog):
         aliases=["my", "чё как", "me", "points", "очки"]
     )
     async def get_my_points(self, ctx):
-        name_change = str(ctx.message.author.name)
+        name_change = str(ctx.message.author.display_name)
         member_found = await self.check_member(name_change)
         if member_found is False:
             await ctx.send(f"{name_change} не найден")
