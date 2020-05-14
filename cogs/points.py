@@ -113,18 +113,18 @@ class MemberPoints(commands.Cog):
         aliases=["get", "покажи", "show"]
     )
     async def get_points(self, ctx, *, message):
-        name_change = self.get_mentioned_users(ctx)
-        await self.inv_obj(name_change)
-        member_found = await self.check_member(name_change)
-        if member_found is False:
-            await ctx.send(f"{name_change} левый пассажир")
-            return
-        user_points = self.get_user_points(name_change)
-        await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
+        mentioned_users = self.get_mentioned_users(ctx)
+        for name_change in mentioned_users:
+            member_found = await self.check_member(name_change)
+            if member_found is False:
+                await ctx.send(f"{name_change} левый пассажир")
+                return
+            user_points = self.get_user_points(name_change)
+            await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
 
     @commands.command(
-        aliases=["my", "чё как", "my points", "points", "очки"]
+        aliases=["my", "чё как", "my points", "points", "очки", "my"]
     )
     async def get_my_points(self, ctx):
         name_change = str(ctx.message.author.name)
@@ -139,8 +139,6 @@ class MemberPoints(commands.Cog):
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
         names = [str(mention.name) for mention in mentions]
-        if names.count == 1:
-            return names[0]
         return names
 
 
