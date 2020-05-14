@@ -140,9 +140,16 @@ class MemberPoints(commands.Cog):
         member_list = self.SHEET.get_all_records()
         user_name = str(name).replace("@", "")
         await self.inv_obj(user_name)
-        member_found = list(filter(lambda person: person['Name'] == user_name, member_list))
+        member_found = list(filter(lambda person: str(person['Name']) == user_name, member_list))
         for person in member_list:
-            await self.inv_obj(person['Name'])
+            if str(person['Name']) == user_name:
+                await self.debugChannel.send(f"equals!")
+                await self.inv_obj(person['Name'])
+                await self.inv_obj(user_name)
+            else:
+                await self.debugChannel.send(f"NEQ!!!!!")
+                await self.inv_obj(person['Name'])
+                await self.inv_obj(user_name)
         if not member_found:
             return False
         else:
