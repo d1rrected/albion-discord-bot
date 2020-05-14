@@ -114,9 +114,9 @@ class MemberPoints(commands.Cog):
     )
     async def get_points(self, ctx, *, message):
         names_for_change = self.get_mentioned_users(ctx)
-
-        for name_change in names_for_change:
-            await self.inv_obj(name_change)
+        await self.inv_obj(name_change)
+        #for name_change in names_for_change:
+        #    await self.inv_obj(name_change)
             #member_found = await self.check_member(name_change)
 
             #if member_found is False:
