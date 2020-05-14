@@ -10,7 +10,7 @@ import gspread
 import re
 from oauth2client.service_account import ServiceAccountCredentials
 
-officer_role = "@ОФИЦЕР"
+officer_roles = "@ОФИЦЕР, @Управление"
 user_start_points = 800
 
 
@@ -194,7 +194,7 @@ class MemberPoints(commands.Cog):
 
 
     def check_role(self, ctx):
-        needed_role = discord.utils.find(lambda r: r.name == officer_role, ctx.message.guild.roles)
+        needed_role = discord.utils.find(lambda r: r.name in officer_roles, ctx.message.guild.roles)
         user_roles = ctx.message.author.roles
         access = any(str(role.name) == str(needed_role) for role in user_roles)
         return access
