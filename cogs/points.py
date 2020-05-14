@@ -108,45 +108,44 @@ class MemberPoints(commands.Cog):
             if ctx.channel.id not in self.workChannel:
                 return
 
+    # @commands.command(
+    #     aliases=["get", "покажи", "show"]
+    # )
+    # async def get_points(self, ctx):
+    #     """Fetch current prices from Data Project API.
 
-    @commands.command(
-        aliases=["get", "покажи", "show"]
-    )
-    async def get_points(self, ctx):
-        """Fetch current prices from Data Project API.
+    #     - Usage: <commandPrefix> price <item name>
+    #     - Item name can also be its ID
+    #     - Uses difflib for item name recognition.
+    #     - Outputs as Discord Embed with thumbnail.
+    #     - Plots 7 days historical prices.
+    #     """
 
-        - Usage: <commandPrefix> price <item name>
-        - Item name can also be its ID
-        - Uses difflib for item name recognition.
-        - Outputs as Discord Embed with thumbnail.
-        - Plots 7 days historical prices.
-        """
+    #     await ctx.channel.trigger_typing()
 
-        await ctx.channel.trigger_typing()
+    #     # Get command (price or quick)
+    #     user_access = self.check_role(ctx)
 
-        # Get command (price or quick)
-        user_access = self.check_role(ctx)
+    #     names_for_change = self.get_mentioned_users(ctx)
 
-        names_for_change = self.get_mentioned_users(ctx)
+    #     # for name_change in names_for_change:
+    #     #     member_found = await self.check_member(name_change)
+    #     #     if member_found is False:
+    #     #         await ctx.send(f"{name_change} левый пассажир")
+    #     #         return
 
-        # for name_change in names_for_change:
-        #     member_found = await self.check_member(name_change)
-        #     if member_found is False:
-        #         await ctx.send(f"{name_change} левый пассажир")
-        #         return
+    #     #     if user_access:
+    #     #         if points_change[0] == '+':
+    #     #             self.add_user_points(name_change, points_change_num)
+    #     #         if points_change[0] == '-':
+    #     #             self.remove_points(name_change, points_change_num)
+    #     #         new_points = self.get_user_points(name_change)
+    #     #         await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
 
-        #     if user_access:
-        #         if points_change[0] == '+':
-        #             self.add_user_points(name_change, points_change_num)
-        #         if points_change[0] == '-':
-        #             self.remove_points(name_change, points_change_num)
-        #         new_points = self.get_user_points(name_change)
-        #         await ctx.send(f"Ля какой - {name_change} - {new_points} очка")
-
-        # Check if in workChannel
-        if self.onlyWork:
-            if ctx.channel.id not in self.workChannel:
-                return
+    #     # Check if in workChannel
+    #     if self.onlyWork:
+    #         if ctx.channel.id not in self.workChannel:
+    #             return
 
 
     @commands.command(
