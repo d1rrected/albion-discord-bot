@@ -113,7 +113,7 @@ class MemberPoints(commands.Cog):
         aliases=["get", "покажи", "show"]
     )
     async def get_points(self, ctx, *, message):
-        name_change = message.split(' ')[0]
+        name_change = self.get_mentioned_users(ctx)
         member_found = await self.check_member(name_change)
         if member_found is False:
             await ctx.send(f"{name_change} левый пассажир")
