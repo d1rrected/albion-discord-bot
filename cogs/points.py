@@ -128,8 +128,8 @@ class MemberPoints(commands.Cog):
         await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
     async def get_user_names(self, message):
-        message_parts = message.split()
-        for mem in message_parts:
+        mentions = message.mentions
+        for mem in mentions:
             await self.inv_obj(mem)
         return message
 
