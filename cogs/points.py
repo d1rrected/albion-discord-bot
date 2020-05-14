@@ -127,7 +127,7 @@ class MemberPoints(commands.Cog):
 
 
     @commands.command(
-        aliases=["my", "чё как", "my points", "points", "очки"]
+        aliases=["my", "чё как", "me", "points", "очки"]
     )
     async def get_my_points(self, ctx):
         name_change = str(ctx.message.author.name)
