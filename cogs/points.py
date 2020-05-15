@@ -64,7 +64,7 @@ class MemberPoints(commands.Cog):
 
         search_user = await self.SEARCH_CLASS.get_user(name_change)
         if self.debug:
-            await self.debugChannel.send(f"searchab_user = {search_user}")
+            await self.debugChannel.send(f"searchab_user = {search_user.alliance}")
         if await self.check_member(name_change):
             await ctx.send(f"{name_change} уже в базе")
         else:
