@@ -6,6 +6,16 @@ import datetime as DT
 import configparser
 import os
 
+class AllianceMember:
+    name: str
+    guild: str
+    alliance: str
+
+    def __init__(self, name: str, guild: str, alliance: str):
+        self.name = name
+        self.guild = guild
+        self.alliance = alliance    
+
 
 class Search(commands.Cog):
     """Cog that deals with official API database.
@@ -293,7 +303,23 @@ class Search(commands.Cog):
             )
 
     def get_user(self, name):
-        return name
+        name = name.replace(" ", "%20")
+        # Search for player/guild ID using search API
+        fullURL = self.searchURL + name
+        with urllib.request.urlopen(fullURL) as url:
+            data = json.loads(url.read().decode())
+        # Get from player API using player's ID
+        fullURL = self.playerURL + data["players"][0]["Id"]
+        with urllib.request.urlopen(fullURL) as url:
+            data = json.loads(url.read().decode())
+        # Get player details
+        name = data["Name"]
+        guild = data["GuildName"]
+        alliance = data["AllianceName"]
+
+        member = AllianceMember(name, guild, alliance)
+
+        return member
 
 def setup(client):
     client.add_cog(Search(client))
