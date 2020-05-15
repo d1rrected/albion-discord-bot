@@ -62,7 +62,7 @@ class MemberPoints(commands.Cog):
     async def register_user(self, ctx):
         name_change = str(ctx.message.author.display_name)
 
-        search_user = self.SEARCH_CLASS.get_user(name_change)
+        search_user = await self.SEARCH_CLASS.get_user(name_change)
         if self.debug:
             await self.debugChannel.send(f"searchab_user = {search_user}")
         if await self.check_member(name_change):

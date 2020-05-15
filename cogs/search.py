@@ -303,8 +303,10 @@ class Search(commands.Cog):
                 f"Please specify a valid option.\nUsage: `search <option> <name>`\nOptions: `player` or `guild`."
             )
 
-    def get_user(self, name):
+    async def get_user(self, name):
         name = re.sub(r'\[.*?\]', '', name).replace(" ", "%20")
+        if self.debug:
+            await self.debugChannel.send(f"try search {name}")
 
         # Search for player/guild ID using search API
         fullURL = self.searchURL + name
