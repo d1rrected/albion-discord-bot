@@ -292,6 +292,8 @@ class Search(commands.Cog):
                 f"Please specify a valid option.\nUsage: `search <option> <name>`\nOptions: `player` or `guild`."
             )
 
+    def get_user(self, name):
+        return name
 
 def setup(client):
     client.add_cog(Search(client))

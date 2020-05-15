@@ -9,6 +9,7 @@ import json
 import gspread
 import re
 from oauth2client.service_account import ServiceAccountCredentials
+from cogs.search import Search
 
 officer_roles = "@ОФИЦЕР, @Управление"
 user_start_points = 800
@@ -26,6 +27,8 @@ class MemberPoints(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+
+        self.SEARCH_CLASS = Search(client)
 
         # Load config.ini and get configs
         currentPath = os.path.dirname(os.path.realpath(__file__))
@@ -59,6 +62,9 @@ class MemberPoints(commands.Cog):
     async def register_user(self, ctx):
         name_change = str(ctx.message.author.display_name)
 
+        search_user = self.SEARCH_CLASS.get_user(name_change)
+        if self.debug:
+            await self.debugChannel.send(f"search_user = {search_user}")
         if await self.check_member(name_change):
             await ctx.send(f"{name_change} уже в базе")
         else:
@@ -109,7 +115,6 @@ class MemberPoints(commands.Cog):
         if self.onlyWork:
             if ctx.channel.id not in self.workChannel:
                 return
-
 
     @commands.command(
         aliases=["get", "покажи", "show"]
