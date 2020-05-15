@@ -303,7 +303,8 @@ class Search(commands.Cog):
             )
 
     def get_user(self, name):
-        name = name.replace("[AC]").replace(" ", "%20")
+        name = re.sub(r'\[.*?\]', '', name).replace(" ", "%20")
+
         # Search for player/guild ID using search API
         fullURL = self.searchURL + name
         with urllib.request.urlopen(fullURL) as url:
