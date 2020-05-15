@@ -5,6 +5,7 @@ import json
 import datetime as DT
 import configparser
 import os
+import re
 
 class AllianceMember:
     name: str
