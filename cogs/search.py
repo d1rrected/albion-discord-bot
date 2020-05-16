@@ -320,7 +320,7 @@ class Search(commands.Cog):
         except:
             if self.debug:
                 await self.debugChannel.send(f"Unexpected error:, {sys.exc_info()[0]}")
-            raise
+            return None
             
 
         # Get player details

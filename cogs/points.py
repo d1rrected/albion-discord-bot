@@ -69,6 +69,9 @@ class MemberPoints(commands.Cog):
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
         else:
             search_user = await self.SEARCH_CLASS.get_user(name_change)
+            if search_user is None:
+                await ctx.send(f"{name_change} не в альянсе")
+                return
             if str(search_user.alliance) == alliance:
                 user_points = user_start_points
                 self.SHEET.append_row([name_change, "Member", user_points])
