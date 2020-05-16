@@ -158,7 +158,8 @@ class MemberPoints(commands.Cog):
         user_name = self.member_name_with_tag(str(name))
         if self.debug:
             await self.debugChannel.send(f"Check user = {user_name}")
-        member_found = list(filter(lambda person: str(person['Name']).lower == user_name.lower, member_list))
+
+        member_found = list(filter(lambda person: str(person['Name']).lower() == user_name.lower(), member_list))
         if not member_found:
             return False
         else:
