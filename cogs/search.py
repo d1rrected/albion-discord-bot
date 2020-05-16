@@ -310,18 +310,12 @@ class Search(commands.Cog):
         # Search for player/guild ID using search API
         fullURL = self.searchURL + name
 
-        if self.debug:
-            await self.debugChannel.send(f"Try search. Url: {fullURL}")
-
         with urllib.request.urlopen(fullURL) as url:
             data = json.loads(url.read().decode())
         # Get from player API using player's ID
         fullURL = self.playerURL + data["players"][0]["Id"]
         with urllib.request.urlopen(fullURL) as url:
             data = json.loads(url.read().decode())
-
-        if self.debug:
-            await self.debugChannel.send(f"Found data: {data}")
 
         # Get player details
         name = data["Name"]
