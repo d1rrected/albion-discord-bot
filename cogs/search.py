@@ -308,6 +308,9 @@ class Search(commands.Cog):
         name = re.sub(r'\[.*?\]', '', name)
         name = name.replace(" ", "")
 
+        
+        if self.debug:
+            await self.debugChannel.send(f"search user {name}")
         # Search for player/guild ID using search API
         fullURL = self.searchURL + name
         try:
