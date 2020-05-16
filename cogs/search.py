@@ -304,12 +304,10 @@ class Search(commands.Cog):
             )
 
     async def get_user(self, name):
-        name = re.sub(r'\[.*?\]', '', name).replace(" ", "")
-        name = re.sub(r'\(.*?\)', '', name)
+        name = re.sub(r'\[.*?\]', '', name)
+        name = name.replace(" ", "")
 
         # Search for player/guild ID using search API
-        
-
         fullURL = self.searchURL + name
 
         if self.debug:
