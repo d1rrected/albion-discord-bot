@@ -12,6 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from cogs.search import Search
 
 officer_roles = "@ОФИЦЕР, @Управление"
+alliance = "ARCH4"
 user_start_points = 800
 
 
@@ -60,13 +61,15 @@ class MemberPoints(commands.Cog):
         aliases=["register", "reg"]
     )
     async def register_user(self, ctx):
-        name_change = str(ctx.message.author.display_name)
-
+        await ctx.channel.trigger_typing()
+        name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
         search_user = await self.SEARCH_CLASS.get_user(name_change)
-        if self.debug:
-            await self.debugChannel.send(f"searchab_user = {search_user.alliance}")
+        if str(search_user.alliance) is not alliance:
+            await ctx.send(f"{name_change} не в альянсе")
+            return
         if await self.check_member(name_change):
-            await ctx.send(f"{name_change} уже в базе")
+            user_points = self.get_user_points(name_change)
+            await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
         else:
             user_points = user_start_points
             self.SHEET.append_row([name_change, "Member", user_points])
@@ -76,14 +79,6 @@ class MemberPoints(commands.Cog):
         aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
     )
     async def process_user(self, ctx, *, message):
-        """Fetch current prices from Data Project API.
-
-        - Usage: <commandPrefix> price <item name>
-        - Item name can also be its ID
-        - Uses difflib for item name recognition.
-        - Outputs as Discord Embed with thumbnail.
-        - Plots 7 days historical prices.
-        """
 
         await ctx.channel.trigger_typing()
 
@@ -98,7 +93,7 @@ class MemberPoints(commands.Cog):
         for name_change in names_for_change:
             member_found = await self.check_member(name_change)
             if member_found is False:
-                await ctx.send(f"{name_change} не найден.")
+                await ctx.send(f"{name_change} не найден")
                 return
 
             if user_access:
@@ -124,7 +119,8 @@ class MemberPoints(commands.Cog):
         for name_change in names_change_list:
             member_found = await self.check_member(name_change)
             if member_found is False:
-                await ctx.send(f"{name_change} не найден")
+                await ctx.send(f"{name_change} не найден, регистрируем..")
+                await self.register_user(ctx)
                 return
             user_points = self.get_user_points(name_change)
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
@@ -134,10 +130,11 @@ class MemberPoints(commands.Cog):
         aliases=["my", "чё как", "me", "points", "очки"]
     )
     async def get_my_points(self, ctx):
-        name_change = str(ctx.message.author.display_name)
+        name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
         member_found = await self.check_member(name_change)
         if member_found is False:
-            await ctx.send(f"{name_change} не найден")
+            await ctx.send(f"{name_change} не найден, регистрируем..")
+            await self.register_user(ctx)
             return
 
         user_points = self.get_user_points(name_change)
@@ -145,7 +142,7 @@ class MemberPoints(commands.Cog):
 
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
-        names = [str(mention.display_name) for mention in mentions]
+        names = [self.member_name_with_tag(str(mention.display_name)) for mention in mentions]
         if names.count == 1:
             return names[0]
         return names
@@ -156,19 +153,18 @@ class MemberPoints(commands.Cog):
 
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
-        user_name = str(name).replace("@", "")
+        user_name = self.member_name_with_tag(str(name))
         if self.debug:
             await self.debugChannel.send(f"UserName = {user_name}")
-        member_found = list(filter(lambda person: str(person['Name']) == user_name, member_list))
+        member_found = list(filter(lambda person: str(person['Name']).lower == user_name.lower, member_list))
         if not member_found:
             return False
         else:
             return True
 
-
     def get_member(self, name):
         member_list = self.SHEET.get_all_records()
-        member = list(filter(lambda person: person['Name'] == name, member_list))
+        member = list(filter(lambda person: str(person['Name']).lower == name.lower, member_list))
         return member[0]
 
 
@@ -188,13 +184,15 @@ class MemberPoints(commands.Cog):
         new_points = current_points + int(points)
         self.SHEET.update_cell(cell.row, cell.col+2, new_points)
 
+    def member_name_with_tag(self, name):
+        name = re.sub(r'\(.*?\)', '', name).replace(" ", "").replace("@", "")
+        return name
 
     def remove_points(self, name, points):
         cell = self.SHEET.find(name)
         current_points = int(self.SHEET.cell(cell.row, cell.col+2).value)
         new_points = current_points - int(points)
         self.SHEET.update_cell(cell.row, cell.col+2, new_points)
-
 
     async def check_role(self, ctx):
         needed_role = discord.utils.find(lambda r: r.name in officer_roles, ctx.message.guild.roles)
