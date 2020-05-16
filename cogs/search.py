@@ -320,9 +320,6 @@ class Search(commands.Cog):
         with urllib.request.urlopen(fullURL) as url:
             data = json.loads(url.read().decode())
 
-        if self.debug:
-            await self.debugChannel.send(f"Found data: {data}")
-
         # Get player details
         name = data["Name"]
         guild = data["GuildName"]

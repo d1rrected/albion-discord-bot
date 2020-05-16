@@ -64,16 +64,17 @@ class MemberPoints(commands.Cog):
         await ctx.channel.trigger_typing()
         name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
         search_user = await self.SEARCH_CLASS.get_user(name_change)
-        if str(search_user.alliance) is not alliance:
+        if str(search_user.alliance) == alliance:
+            if await self.check_member(name_change):
+                user_points = self.get_user_points(name_change)
+                await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
+            else:
+                user_points = user_start_points
+                self.SHEET.append_row([name_change, "Member", user_points])
+                await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
+        else:
             await ctx.send(f"{name_change} не в альянсе")
             return
-        if await self.check_member(name_change):
-            user_points = self.get_user_points(name_change)
-            await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
-        else:
-            user_points = user_start_points
-            self.SHEET.append_row([name_change, "Member", user_points])
-            await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
             
     @commands.command(
         aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
