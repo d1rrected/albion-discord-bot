@@ -60,13 +60,76 @@ class MemberPoints(commands.Cog):
     @commands.command(
         aliases=["register", "reg"]
     )
-    async def register_user(self, ctx, message):
+    async def register_user(self, ctx):
         await ctx.channel.trigger_typing()
-        if message is None:
-            name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
+        await self.find_or_create_record(ctx, ctx.message.author.display_name)
+            
+    @commands.command(
+        aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
+    )
+    async def process_user(self, ctx, *, message):
+
+        await ctx.channel.trigger_typing()
+
+        # Get command (price or quick)
+        user_access = await self.check_role(ctx)
+
+        names_for_change = self.get_mentioned_users(ctx)
+
+        points_change = re.search(r"[\+\-].\d*", message).group()
+        points_change_num = points_change[1:]
+        if user_access:
+            for name_change in names_for_change:
+                member_found = await self.check_member(name_change)
+                if member_found is False:
+                    await ctx.send(f"{name_change} не найден, регистрируем..")
+                    await self.find_or_create_record(ctx, name_change)
+                    continue
+                else:
+                    if points_change[0] == '+':
+                        self.add_user_points(name_change, points_change_num)
+                    if points_change[0] == '-':
+                        self.remove_points(name_change, points_change_num)
+                    new_points = self.get_user_points(name_change)
+                    await ctx.send(f"Ля какой - {name_change} - {new_points} очков")
         else:
-            mentioned_user = self.get_mentioned_users(ctx)
-            name_change = self.member_name_with_tag(str(mentioned_user[0]))
+            await ctx.send(f"Ты не офицер, я тебя не знаю.")
+
+        # Check if in workChannel
+        if self.onlyWork:
+            if ctx.channel.id not in self.workChannel:
+                return
+
+    @commands.command(
+        aliases=["get", "покажи", "show"]
+    )
+    async def get_points(self, ctx, *, message):
+        names_change_list = self.get_mentioned_users(ctx)
+        for name_change in names_change_list:
+            member_found = await self.check_member(name_change)
+            if member_found is False:
+                await ctx.send(f"{name_change} не найден, регистрируем..")
+                await self.find_or_create_record(ctx, name_change)
+                return
+            user_points = self.get_user_points(name_change)
+            await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
+
+    @commands.command(
+        aliases=["my", "чё как", "me", "points", "очки"]
+    )
+    async def get_my_points(self, ctx):
+        name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
+        member_found = await self.check_member(name_change)
+        if member_found is False:
+            await ctx.send(f"{name_change} не найден, регистрируем..")
+            await self.find_or_create_record(ctx, name_change)
+            return
+        else:
+            user_points = self.get_user_points(name_change)
+            await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
+
+    async def find_or_create_record(self, ctx, username):
+        name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
 
         if await self.check_member(name_change):
             user_points = self.get_user_points(name_change)
@@ -83,71 +146,6 @@ class MemberPoints(commands.Cog):
             else:
                 await ctx.send(f"{name_change} не в альянсе")
                 return
-            
-    @commands.command(
-        aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
-    )
-    async def process_user(self, ctx, *, message):
-
-        await ctx.channel.trigger_typing()
-
-        # Get command (price or quick)
-        user_access = await self.check_role(ctx)
-
-        names_for_change = self.get_mentioned_users(ctx)
-
-        points_change = re.search(r"[\+\-].\d*", message).group()
-        points_change_num = points_change[1:]
-
-        for name_change in names_for_change:
-            member_found = await self.check_member(name_change)
-            if member_found is False:
-                await ctx.send(f"{name_change} не найден")
-                return
-
-            if user_access:
-                if points_change[0] == '+':
-                    self.add_user_points(name_change, points_change_num)
-                if points_change[0] == '-':
-                    self.remove_points(name_change, points_change_num)
-                new_points = self.get_user_points(name_change)
-                await ctx.send(f"Ля какой - {name_change} - {new_points} очков")
-            else:
-                await ctx.send(f"Ты не офицер, я тебя не знаю.")
-
-        # Check if in workChannel
-        if self.onlyWork:
-            if ctx.channel.id not in self.workChannel:
-                return
-
-    @commands.command(
-        aliases=["get", "покажи", "show"]
-    )
-    async def get_points(self, ctx, *, message):
-        names_change_list = self.get_mentioned_users(ctx)
-        for name_change in names_change_list:
-            member_found = await self.check_member(name_change)
-            if member_found is False:
-                await ctx.send(f"{name_change} не найден, регистрируем..")
-                await self.register_user(ctx, message)
-                return
-            user_points = self.get_user_points(name_change)
-            await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
-
-
-    @commands.command(
-        aliases=["my", "чё как", "me", "points", "очки"]
-    )
-    async def get_my_points(self, ctx):
-        name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
-        member_found = await self.check_member(name_change)
-        if member_found is False:
-            await ctx.send(f"{name_change} не найден, регистрируем..")
-            await self.register_user(ctx, None)
-            return
-
-        user_points = self.get_user_points(name_change)
-        await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
