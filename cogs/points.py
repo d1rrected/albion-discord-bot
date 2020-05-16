@@ -138,7 +138,7 @@ class MemberPoints(commands.Cog):
             search_user = await self.SEARCH_CLASS.get_user(name_change)
             if search_user is None:
                 await ctx.send(f"{name_change} не найден.")
-                await ctx.send(f"Проблема на albion api или имя не соответствует имени в игре.")
+                await ctx.send(f"Что-то пошло не так. Проверьте имя в discord или попробуйте позже.")
                 return
             if str(search_user.alliance) == alliance:
                 user_points = user_start_points
