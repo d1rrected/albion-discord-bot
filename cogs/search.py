@@ -6,6 +6,7 @@ import datetime as DT
 import configparser
 import os
 import re
+import sys
 
 class AllianceMember:
     name: str
