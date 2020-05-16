@@ -60,9 +60,13 @@ class MemberPoints(commands.Cog):
     @commands.command(
         aliases=["register", "reg"]
     )
-    async def register_user(self, ctx):
+    async def register_user(self, ctx, message):
         await ctx.channel.trigger_typing()
-        name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
+        if message is None:
+            name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
+        else:
+            mentioned_user = self.get_mentioned_users(ctx)
+            name_change = self.member_name_with_tag(str(mentioned_user[0]))
 
         if await self.check_member(name_change):
             user_points = self.get_user_points(name_change)
@@ -125,7 +129,7 @@ class MemberPoints(commands.Cog):
             member_found = await self.check_member(name_change)
             if member_found is False:
                 await ctx.send(f"{name_change} не найден, регистрируем..")
-                await self.register_user(ctx)
+                await self.register_user(ctx, message)
                 return
             user_points = self.get_user_points(name_change)
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
@@ -139,7 +143,7 @@ class MemberPoints(commands.Cog):
         member_found = await self.check_member(name_change)
         if member_found is False:
             await ctx.send(f"{name_change} не найден, регистрируем..")
-            await self.register_user(ctx)
+            await self.register_user(ctx, None)
             return
 
         user_points = self.get_user_points(name_change)

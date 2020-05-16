@@ -322,14 +322,14 @@ class Search(commands.Cog):
                 await self.debugChannel.send(f"Unexpected error:, {sys.exc_info()[0]}")
             return None
             
-
         # Get player details
         name = data["Name"]
         guild = data["GuildName"]
         alliance = data["AllianceName"]
 
         member = AllianceMember(name, guild, alliance)
-
+        if self.debug:
+            await self.debugChannel.send(f"member: {member.name}, {member.guild}, {member.alliance}")
         return member
 
 def setup(client):
