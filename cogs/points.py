@@ -109,8 +109,9 @@ class MemberPoints(commands.Cog):
                 await ctx.send(f"{name_change} не найден, регистрируем..")
                 await self.find_or_create_record(ctx, name_change)
                 return
-            user_points = self.get_user_points(name_change)
-            await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
+            else:
+                user_points = self.get_user_points(name_change)
+                await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
     @commands.command(
         aliases=["my", "чё как", "me", "points", "очки"]
@@ -127,7 +128,7 @@ class MemberPoints(commands.Cog):
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
     async def find_or_create_record(self, ctx, username, send_output=True):
-        name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
+        name_change = self.member_name_with_tag(username)
 
         if await self.check_member(name_change):
             user_points = self.get_user_points(name_change)
