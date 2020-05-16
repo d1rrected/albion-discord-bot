@@ -75,7 +75,6 @@ class MemberPoints(commands.Cog):
         user_access = await self.check_role(ctx)
 
         names_for_change = self.get_mentioned_users(ctx)
-
         points_change = re.search(r"[\+\-].\d*", message).group()
         points_change_num = points_change[1:]
         if user_access:
@@ -83,15 +82,14 @@ class MemberPoints(commands.Cog):
                 member_found = await self.check_member(name_change)
                 if member_found is False:
                     await ctx.send(f"{name_change} не найден, регистрируем..")
-                    await self.find_or_create_record(ctx, name_change)
-                    continue
-                else:
-                    if points_change[0] == '+':
-                        self.add_user_points(name_change, points_change_num)
-                    if points_change[0] == '-':
-                        self.remove_points(name_change, points_change_num)
-                    new_points = self.get_user_points(name_change)
-                    await ctx.send(f"Ля какой - {name_change} - {new_points} очков")
+                    await self.find_or_create_record(ctx, name_change, False)
+
+                if points_change[0] == '+':
+                    self.add_user_points(name_change, points_change_num)
+                if points_change[0] == '-':
+                    self.remove_points(name_change, points_change_num)
+                new_points = self.get_user_points(name_change)
+                await ctx.send(f"Ля какой - {name_change} - {new_points} очков")
         else:
             await ctx.send(f"Ты не офицер, я тебя не знаю.")
 
@@ -128,7 +126,7 @@ class MemberPoints(commands.Cog):
             user_points = self.get_user_points(name_change)
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
 
-    async def find_or_create_record(self, ctx, username):
+    async def find_or_create_record(self, ctx, username, send_output=True):
         name_change = self.member_name_with_tag(str(ctx.message.author.display_name))
 
         if await self.check_member(name_change):
