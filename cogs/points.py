@@ -186,7 +186,7 @@ class MemberPoints(commands.Cog):
         self.SHEET.update_cell(cell.row, cell.col+2, new_points)
 
     def member_name_with_tag(self, name):
-        name = re.sub(r'\(.*?\)', '', name).replace(" ", "").replace("@", "")
+        name = re.sub(r'\(.*?\)', '', name).replace("@", "").strip()
         return name
 
     def remove_points(self, name, points):
