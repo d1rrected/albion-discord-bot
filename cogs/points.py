@@ -167,7 +167,7 @@ class MemberPoints(commands.Cog):
 
     def get_member(self, name):
         member_list = self.SHEET.get_all_records()
-        member = list(filter(lambda person: str(person['Name']).lower == name.lower, member_list))
+        member = list(filter(lambda person: str(person['Name']).lower() == name.lower(), member_list))
         return member[0]
 
 
