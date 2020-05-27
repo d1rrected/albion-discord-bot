@@ -221,6 +221,7 @@ class MemberPoints(commands.Cog):
         user_roles = ctx.message.author.roles
         if self.debug:
             await self.debugChannel.send(f"user_roles: {user_roles}")
+            await self.debugChannel.send(f"needed_role: {needed_role}")
             await self.debugChannel.send(f"officer_roles: {officer_roles}")
         access = any(str(role.name) == str(needed_role) for role in user_roles)
         return access
