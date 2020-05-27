@@ -65,7 +65,7 @@ class MemberPoints(commands.Cog):
         await self.find_or_create_record(ctx, ctx.message.author.display_name)
             
     @commands.command(
-        aliases=["add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
+        aliases=["ш", "д", "+", "-", "add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
     )
     async def process_user(self, ctx, *, message):
 
@@ -74,8 +74,10 @@ class MemberPoints(commands.Cog):
         # Get command (price or quick)
         user_access = await self.check_role(ctx)
 
+        message_text = ctx.message.content.replace("!", "")
+
         names_for_change = self.get_mentioned_users(ctx)
-        points_change = re.search(r"[\+\-].\d*", message).group()
+        points_change = re.search(r"[\+\-].\d*", message_text).group()
         points_change_num = points_change[1:]
         if user_access:
             for name_change in names_for_change:
@@ -149,6 +151,10 @@ class MemberPoints(commands.Cog):
                 await ctx.send(f"{name_change} не в альянсе.")
                 return
 
+    async def check_user_in_alliance(self, username):
+        name = self.clean_name(username)
+        
+
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
         names = [self.member_name_with_tag(str(mention.display_name)) for mention in mentions]
@@ -159,6 +165,7 @@ class MemberPoints(commands.Cog):
 
     async def inv_obj(self, object):
         await self.debugChannel.send(f"object: {object}, type: {type(object)}")
+
 
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
@@ -172,11 +179,11 @@ class MemberPoints(commands.Cog):
         else:
             return True
 
+
     def get_member(self, name):
         member_list = self.SHEET.get_all_records()
         member = list(filter(lambda person: str(person['Name']).lower() == name.lower(), member_list))
         return member[0]
-
 
     def get_user_points(self, name):
         member = self.get_member(name)
@@ -196,6 +203,11 @@ class MemberPoints(commands.Cog):
 
     def member_name_with_tag(self, name):
         name = re.sub(r'\(.*?\)', '', name).replace("@", "").strip()
+        return name
+
+    def clean_name(self, name):
+        name_with_tag = self.member_name_with_tag(name)
+        name = re.sub(r'\[.*?\]', '', name)
         return name
 
     def remove_points(self, name, points):
