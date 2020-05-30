@@ -183,7 +183,6 @@ class MemberPoints(commands.Cog):
         member_list = self.SHEET.get_all_records()
         return member_list
 
-
     def add_user_points(self, name, points):
         cell = self.SHEET.find(name)
         current_points = int(self.SHEET.cell(cell.row, cell.col+2).value)
@@ -223,14 +222,24 @@ class MemberPoints(commands.Cog):
         await ctx.channel.trigger_typing()
         user_access = await self.check_user_access(ctx)
         if user_access is False:
-            await ctx.send(f"Ты не офицер, я тебя не знаю.")
+            return await ctx.send(f"Ты не офицер, я тебя не знаю.")
+
+        message_text = ctx.message.content.replace("!", "")
+        names_for_change = self.get_mentioned_users(ctx)
+        points_change = re.search(r"[\+\-].\d*", message_text).group()
+        points_change_num = points_change[1:]
+
+    def get_mentioned_users(self, ctx):
+        mentions = ctx.message.mentions
+        names = [self.member_name_with_tag(str(mention.display_name)) for mention in mentions]
+        if names.count == 1:
+            return names[0]
+        return names
 
     async def check_user_access(self, ctx):
-        needed_roles = officer_roles.split(',')
+        needed_roles = officer_roles.split(',') 
         user_roles = ctx.message.author.roles
         for needed_role_name in needed_roles:
-            if self.debug:
-                await self.debugChannel.send(f"check user_role = {user_roles} contains needed_role = {needed_role_name}")
             for user_role in user_roles:
                 need_role = str(needed_role_name).strip().lower()
                 check_role = str(user_role.name).lower()
@@ -238,7 +247,7 @@ class MemberPoints(commands.Cog):
                     return True
                 else:
                     if self.debug:
-                        await self.debugChannel.send(f"check_role = {check_role} not equal need_role = {need_role}")
+                        await self.debugChannel.send(f"Checkrole. check_role = {check_role} not equal need_role = {need_role}")
         return False
 
 def setup(client):
