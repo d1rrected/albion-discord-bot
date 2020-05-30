@@ -226,7 +226,7 @@ class MemberPoints(commands.Cog):
             await ctx.send(f"Ты не офицер, я тебя не знаю.")
 
     async def check_user_access(self, ctx):
-        needed_roles = officer_roles.split()
+        needed_roles = officer_roles.split(',').replace(' ', '')
         user_roles = ctx.message.author.roles
         for needed_role_name in needed_roles:
             if self.debug:
