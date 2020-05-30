@@ -228,12 +228,10 @@ class MemberPoints(commands.Cog):
     async def check_user_access(self, ctx):
         needed_roles = officer_roles.split()
         user_roles = ctx.message.author.roles
-        for role in needed_roles:
-            needed_role = discord.utils.find(lambda r: r.name in officer_roles, ctx.message.guild.roles)
+        for needed_role_name in needed_roles:
+            needed_role = discord.utils.find(lambda r: r.name == needed_role_name, ctx.message.guild.roles)
             if self.debug:
-                await self.debugChannel.send(f"user_roles: {user_roles}")
-                await self.debugChannel.send(f"needed_role: {needed_role}")
-                await self.debugChannel.send(f"officer_roles: {officer_roles}")
+                await self.debugChannel.send(f"check user_role = {user_roles} is equal needed_role = {needed_role}")
             access = any(str(role.name) == str(needed_role) for role in user_roles)
             if access:
                 return access
