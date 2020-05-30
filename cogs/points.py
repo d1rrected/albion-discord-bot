@@ -231,7 +231,7 @@ class MemberPoints(commands.Cog):
         for needed_role_name in needed_roles:
             if self.debug:
                 await self.debugChannel.send(f"check user_role = {user_roles} contains needed_role = {needed_role_name}")
-            access = any(str(role.name) == str(needed_role_name) for role in user_roles)
+            access = any(str(role.name) == str(needed_role_name.replace("@","")) for role in user_roles)
             if access:
                 return access
         return False
