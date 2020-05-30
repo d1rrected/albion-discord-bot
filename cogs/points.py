@@ -232,7 +232,7 @@ class MemberPoints(commands.Cog):
             if self.debug:
                 await self.debugChannel.send(f"check user_role = {user_roles} contains needed_role = {needed_role_name}")
             for user_role in user_roles:
-                need_role = str(needed_role_name.replace("@","")).lower()
+                need_role = str(needed_role_name).lower()
                 check_role = str(user_role.name).lower()
                 if check_role == need_role:
                     return True
