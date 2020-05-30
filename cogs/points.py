@@ -231,9 +231,14 @@ class MemberPoints(commands.Cog):
         for needed_role_name in needed_roles:
             if self.debug:
                 await self.debugChannel.send(f"check user_role = {user_roles} contains needed_role = {needed_role_name}")
-            access = any(str(role.name) == str(needed_role_name.replace("@","")) for role in user_roles)
-            if access:
-                return access
+            for user_role in user_roles:
+                need_role = str(needed_role_name.replace("@","")).lower()
+                check_role = str(user_role.name).lower()
+                if check_role == need_role:
+                    return True
+                else:
+                    if self.debug:
+                        await self.debugChannel.send(f"check_role = {check_role} not equal need_role = {need_role}")
         return False
 
 def setup(client):
