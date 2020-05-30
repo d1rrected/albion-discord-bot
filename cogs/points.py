@@ -68,7 +68,6 @@ class MemberPoints(commands.Cog):
         aliases=["ш", "д", "+", "-", "add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
     )
     async def process_user(self, ctx, *, message):
-
         await ctx.channel.trigger_typing()
 
         # Get command (price or quick)
@@ -99,6 +98,7 @@ class MemberPoints(commands.Cog):
         if self.onlyWork:
             if ctx.channel.id not in self.workChannel:
                 return
+
 
     @commands.command(
         aliases=["get", "покажи", "show"]
@@ -153,19 +153,9 @@ class MemberPoints(commands.Cog):
 
     async def check_user_in_alliance(self, username):
         name = self.clean_name(username)
-        
-
-    def get_mentioned_users(self, ctx):
-        mentions = ctx.message.mentions
-        names = [self.member_name_with_tag(str(mention.display_name)) for mention in mentions]
-        if names.count == 1:
-            return names[0]
-        return names
-
 
     async def inv_obj(self, object):
         await self.debugChannel.send(f"object: {object}, type: {type(object)}")
-
 
     async def check_member(self, name):
         member_list = self.SHEET.get_all_records()
@@ -188,7 +178,6 @@ class MemberPoints(commands.Cog):
     def get_user_points(self, name):
         member = self.get_member(name)
         return member["Points"]
-
 
     def get_all_members(self):
         member_list = self.SHEET.get_all_records()
@@ -225,6 +214,30 @@ class MemberPoints(commands.Cog):
             await self.debugChannel.send(f"officer_roles: {officer_roles}")
         access = any(str(role.name) == str(needed_role) for role in user_roles)
         return access
+
+    
+    @commands.command(
+        aliases=["test"]
+    )
+    async def add_or_remove_points(self, ctx, *, message):
+        await ctx.channel.trigger_typing()
+        user_access = await self.check_user_access(ctx)
+        if user_access is False:
+            await ctx.send(f"Ты не офицер, я тебя не знаю.")
+
+    async def check_user_access(self, ctx):
+        needed_roles = officer_roles.split()
+        user_roles = ctx.message.author.roles
+        for role in needed_roles:
+            needed_role = discord.utils.find(lambda r: r.name in officer_roles, ctx.message.guild.roles)
+            if self.debug:
+                await self.debugChannel.send(f"user_roles: {user_roles}")
+                await self.debugChannel.send(f"needed_role: {needed_role}")
+                await self.debugChannel.send(f"officer_roles: {officer_roles}")
+            access = any(str(role.name) == str(needed_role) for role in user_roles)
+            if access:
+                return access
+        return False
 
 def setup(client):
     client.add_cog(MemberPoints(client))
