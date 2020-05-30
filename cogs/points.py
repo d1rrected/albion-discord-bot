@@ -229,10 +229,9 @@ class MemberPoints(commands.Cog):
         needed_roles = officer_roles.split()
         user_roles = ctx.message.author.roles
         for needed_role_name in needed_roles:
-            needed_role = discord.utils.find(lambda r: r.name == needed_role_name, ctx.message.guild.roles)
             if self.debug:
-                await self.debugChannel.send(f"check user_role = {user_roles} is equal needed_role = {needed_role}")
-            access = any(str(role.name) == str(needed_role) for role in user_roles)
+                await self.debugChannel.send(f"check user_role = {user_roles} contains needed_role = {needed_role_name}")
+            access = any(str(role.name) == str(needed_role_name) for role in user_roles)
             if access:
                 return access
         return False
