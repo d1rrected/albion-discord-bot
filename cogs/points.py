@@ -12,7 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from cogs.search import Search
 import services.albionapi
 
-officer_roles = "@ОФИЦЕР, @Управление"
+officer_roles = "@ОФИЦЕР, управление"
 alliance = "ARCH4"
 user_start_points = 800
 
@@ -231,32 +231,12 @@ class MemberPoints(commands.Cog):
         points_change = re.search(r"[\+\-].\d*", message_text).group()
         points_change_num = points_change[1:]
 
-    @commands.command(
-        aliases=["sync"]
-    )
-    async def sync_members(self, ctx):
-        await ctx.channel.trigger_typing()
-        user_access = await self.check_user_access(ctx)
-        if user_access is False:
-            return await ctx.send(f"Ты не офицер, я тебя не знаю.")
-
-        all_members = ctx.message.server.members
-        alliance_members_names = self.get_alliance_members()
-
-        e_member_discord = all_members[0]
-        e_member = alliance_members_names[0]
-
-        if self.debug:
-            await self.debugChannel.send(f"Discord member is {e_member_discord}")
-            await self.debugChannel.send(f"member from aly is {e_member}")
-
+    
         
 
     def get_alliance_members(self):
         alliance_members_names = self.albionapi.get_all_alliance_member_names()
         return alliance_members_names
-
-
 
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions
@@ -278,6 +258,25 @@ class MemberPoints(commands.Cog):
                     if self.debug:
                         await self.debugChannel.send(f"Checkrole. check_role = {check_role} not equal need_role = {need_role}")
         return False
+
+    @commands.command(
+        aliases=["sync"]
+    )
+    async def sync_members(self, ctx):
+        await ctx.channel.trigger_typing()
+        user_access = await self.check_user_access(ctx)
+        if user_access is False:
+            return await ctx.send(f"Ты не офицер, я тебя не знаю.")
+
+        all_members = ctx.message.server.members
+        alliance_members_names = self.get_alliance_members()
+
+        e_member_discord = all_members[0]
+        e_member = alliance_members_names[0]
+
+        if self.debug:
+            await self.debugChannel.send(f"Discord member is {e_member_discord}")
+            await self.debugChannel.send(f"member from aly is {e_member}")
 
 def setup(client):
     client.add_cog(MemberPoints(client))
