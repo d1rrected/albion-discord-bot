@@ -12,7 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from cogs.search import Search
 import services.albionapi
 
-officer_roles = "@ОФИЦЕР, управление"
+officer_roles = "@ОФИЦЕР,@управление"
 alliance = "ARCH4"
 user_start_points = 800
 
@@ -256,7 +256,7 @@ class MemberPoints(commands.Cog):
                     return True
                 else:
                     if self.debug:
-                        await self.debugChannel.send(f"Checkrole. check_role = {check_role} not equal need_role = {need_role}")
+                        await self.debugChannel.send(f"Checkrole. check_role = {check_role} ({type(check_role)}) not equal need_role = {need_role} ({type(need_role)})")
         return False
 
     @commands.command(
