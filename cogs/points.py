@@ -10,10 +10,12 @@ import gspread
 import re
 from oauth2client.service_account import ServiceAccountCredentials
 from cogs.search import Search
+import services.albionapi
 
 officer_roles = "@ОФИЦЕР, @Управление"
 alliance = "ARCH4"
 user_start_points = 800
+
 
 
 class MemberPoints(commands.Cog):
@@ -55,6 +57,7 @@ class MemberPoints(commands.Cog):
         creds = ServiceAccountCredentials.from_json_keyfile_name('gcreds.json', self.SCOPES)
         glient = gspread.authorize(creds)
 
+        self.albionapi = services.albionapi.AlbionApi()
         self.SHEET = glient.open("albion_choppers_member_points").sheet1
 
     @commands.command(
@@ -213,7 +216,6 @@ class MemberPoints(commands.Cog):
             await self.debugChannel.send(f"officer_roles: {officer_roles}")
         access = any(str(role.name) == str(needed_role) for role in user_roles)
         return access
-
     
     @commands.command(
         aliases=["test"]
@@ -228,6 +230,33 @@ class MemberPoints(commands.Cog):
         names_for_change = self.get_mentioned_users(ctx)
         points_change = re.search(r"[\+\-].\d*", message_text).group()
         points_change_num = points_change[1:]
+
+    @commands.command(
+        aliases=["sync"]
+    )
+    async def sync_members(self, ctx):
+        await ctx.channel.trigger_typing()
+        user_access = await self.check_user_access(ctx)
+        if user_access is False:
+            return await ctx.send(f"Ты не офицер, я тебя не знаю.")
+
+        all_members = ctx.message.server.members
+        alliance_members_names = self.get_alliance_members()
+
+        e_member_discord = all_members[0]
+        e_member = alliance_members_names[0]
+
+        if self.debug:
+            await self.debugChannel.send(f"Discord member is {e_member_discord}")
+            await self.debugChannel.send(f"member from aly is {e_member}")
+
+        
+
+    def get_alliance_members(self):
+        alliance_members_names = self.albionapi.get_all_alliance_member_names()
+        return alliance_members_names
+
+
 
     def get_mentioned_users(self, ctx):
         mentions = ctx.message.mentions

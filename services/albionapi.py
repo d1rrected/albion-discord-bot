@@ -28,9 +28,22 @@ class AlbionApi():
         self.locationURL = "?locations=Caerleon,Lymhurst,Martlock,Bridgewatch,FortSterling,Thetford,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
         # Historical
         self.historyURL = "https://www.albion-online-data.com/api/v1/stats/charts/"
-        self.historyLocationURL = "&locations=Thetford,Martlock,Caerleon,Lymhurst,Bridgewatch,FortSterling,ArthursRest,MerlynsRest,MorganasRest,BlackMarket"
+        self.historyLocationURL = "&locations=BlackMarket"
 
         self.itemDataURL = "https://gameinfo.albiononline.com/api/gameinfo/items/"
+
+        self.allianceURL = (
+            "https://gameinfo.albiononline.com/api/gameinfo/alliances/"  # + ID
+        )
+        self.guildURL = (
+            "https://gameinfo.albiononline.com/api/gameinfo/guilds/"  # + ID + /members
+        )
+        self.playerURL = (
+            "https://gameinfo.albiononline.com/api/gameinfo/players/"  # + ID
+        )
+        self.searchURL = (
+            "https://gameinfo.albiononline.com/api/gameinfo/search?q="  # + name
+        )
 
         # Bot will search items through this list
         # There are also different localization names
@@ -55,7 +68,6 @@ class AlbionApi():
         craft_items = data["craftingRequirements"]["craftResourceList"]
         return craft_items
 
-
     def get_all_equipment_id_from_itemdata(self):
         # Open list of items
         try:
@@ -78,7 +90,6 @@ class AlbionApi():
     def get_item_data_by_id(self, item_id):
         items_ids = []
         return items_ids
-    
 
     def get_item_blackmarket_price(self, item_id):
         fullURL = self.apiURL + item_id + f"?locations=BlackMarket"
@@ -98,6 +109,26 @@ class AlbionApi():
             return int(average_price)            
         else:
             return 0
+
+    def get_item_blackmarket_history_price(self, item_id):
+        today = DT.datetime.utcnow()
+        numDays = 0
+        date = (today - DT.timedelta(days=numDays)).strftime("%m-%d-%Y")
+        prices_minAll = [[]]
+        timestampsAll = [[]]
+
+        fullURL = self.historyURL + item_id + "?date=" + date + self.historyLocationURL
+        with urllib.request.urlopen(fullURL) as url:
+            prices = json.loads(url.read().decode())
+
+        if not prices:
+            return 0, 0
+        else:
+            avg_price = prices[0]["data"]["prices_avg"][0]
+        
+        items_count = prices[0]["data"]["item_count"][0]
+        
+        return avg_price, items_count
 
     def item_match(self, inputWord):
         """Find closest matching item name and ID of input item.
@@ -165,3 +196,66 @@ class AlbionApi():
         itemIDs = [data[jDist[1]]["UniqueName"] for jDist in jDists[:4]]
 
         return itemNames, itemIDs
+
+
+    def search_guild(self, guildName):
+        guildNameUrl = guildName.replace(" ", "%20")
+        fullURL = self.searchURL + guildNameUrl
+        with urllib.request.urlopen(fullURL) as url:
+            data = json.loads(url.read().decode())
+        guilds = data["guilds"]
+        for guild in guilds:
+            if guild["Name"] == guildName:
+                return guild
+        return ""
+
+    def get_guild(self, guildId):
+        fullURL = self.guildURL + guildId
+        with urllib.request.urlopen(fullURL) as url:
+            data = json.loads(url.read().decode())
+        return data
+
+    def request_api(self, url, retry_count = 10):
+        success = False
+        retry_num = 0
+        while not success:
+            try:
+                if retry_num > retry_count:
+                    break
+                with urllib.request.urlopen(url) as url:
+                    data = json.loads(url.read().decode())
+                    success = True
+            except:
+                retry_num = retry_num + 1
+                continue
+        return data
+
+    def get_guild_members(self, guildId):
+        fullURL = self.guildURL + guildId + '/members'
+        data = self.request_api(fullURL)
+        return data
+
+    def get_alliance(self, allianceId):
+        fullURL = self.allianceURL + allianceId
+        with urllib.request.urlopen(fullURL) as url:
+            data = json.loads(url.read().decode())
+        return data
+
+    def get_our_alliance(self, myGuild='Albion Choppers'):
+        guild = ap.search_guild(myGuild)
+        alliance_id = guild["AllianceId"]
+        return self.get_alliance(alliance_id)
+
+    def get_all_alliance_member_names(self):
+        result_list = []
+        alliance_guilds = self.get_our_alliance()["Guilds"]
+        for guild_in_alliance in alliance_guilds:
+            guild_members = self.get_guild_members(guild_in_alliance["Id"])
+            names = [member["Name"] for member in guild_members]
+            result_list = result_list + names
+        return result_list
+
+
+ap = AlbionApi()
+all_members = ap.get_all_alliance_member_names()
+all_members
