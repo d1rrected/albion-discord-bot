@@ -250,8 +250,8 @@ class MemberPoints(commands.Cog):
         user_roles = ctx.message.author.roles
         for needed_role_name in needed_roles:
             for user_role in user_roles:
-                need_role = str(needed_role_name).strip().lower()
-                check_role = str(user_role.name).lower()
+                need_role = str(needed_role_name).strip().lower().replace('@','')
+                check_role = str(user_role.name).lower().replace('@','')
                 if check_role == need_role:
                     return True
                 else:
