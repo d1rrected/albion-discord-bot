@@ -276,8 +276,9 @@ class MemberPoints(commands.Cog):
         # (f"alliance_members_names is {alliance_members_names}, count is {member_len}")
         alliance_members_lower = [name.lower() for name in alliance_members_names]
         # chunks = self.chunks(alliance_members_lower, 150)
-        print(alliance_members_lower)
 
+        
+        print(alliance_members_lower)
         for server_member in server_members[:20]:
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
