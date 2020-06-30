@@ -256,6 +256,6 @@ class AlbionApi():
         return result_list
 
 
-ap = AlbionApi()
-all_members = ap.get_all_alliance_member_names()
-all_members
+#ap = AlbionApi()
+#all_members = ap.get_all_alliance_member_names()
+#all_members

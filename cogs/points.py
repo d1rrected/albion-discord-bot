@@ -272,6 +272,8 @@ class MemberPoints(commands.Cog):
                 server_members.append(member)
         
         alliance_members_names = self.get_alliance_members()
+        member_len = len(alliance_members_names)
+        print(f"alliance_members_names is {alliance_members_names}, count is {member_len}")
         alliance_members_lower = [name.lower() for name in alliance_members_names]
         chunks = self.chunks(alliance_members_lower, 150)
 
