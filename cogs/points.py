@@ -268,14 +268,19 @@ class MemberPoints(commands.Cog):
         if user_access is False:
             return await ctx.send(f"Ты не офицер, я тебя не знаю.")
 
-        server = ctx.message.server
+        server_members = []
+        for guild in self.client.guilds:
+            for member in guild.members:
+                server_members.append(member)
+
+        
         #alliance_members_names = self.get_alliance_members()
 
-        #e_member_discord = all_members[0]
+        e_member_discord = server_members[0]
         #e_member = alliance_members_names[0]
 
         if self.debug:
-            self.inv_obj(server)
+            self.inv_obj(e_member_discord)
             #await self.debugChannel.send(f"member from aly is {e_member}")
 
 def setup(client):
