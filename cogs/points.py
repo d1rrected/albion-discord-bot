@@ -199,6 +199,7 @@ class MemberPoints(commands.Cog):
     def clean_name(self, name):
         name_with_tag = self.member_name_with_tag(name)
         name = re.sub(r'\[.*?\]', '', name_with_tag)
+        name = name.strip()
         return name
 
     def remove_points(self, name, points):
@@ -278,7 +279,7 @@ class MemberPoints(commands.Cog):
         # chunks = self.chunks(alliance_members_lower, 150)
 
         
-        print(alliance_members_lower)
+        #print(alliance_members_lower)
         for server_member in server_members[2:3]:
             member_found = False
             server_member_roles = server_member.roles
@@ -295,8 +296,8 @@ class MemberPoints(commands.Cog):
                     if ally_member == clean_name:
                         print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
                         member_found = True
-                    else:
-                        print(f"ally_member {ally_member} not equal clean_name {clean_name}. ally_member type {type(ally_member)}")
+                    #else:
+                        # print(f"ally_member {ally_member} not equal clean_name {clean_name}. ally_member type {type(ally_member)}")
                 if not member_found:
                     await self.debugChannel.send(f"NOT Alliance member {clean_name} roles is {roles_list}")
 
