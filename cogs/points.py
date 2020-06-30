@@ -272,23 +272,24 @@ class MemberPoints(commands.Cog):
                 server_members.append(member)
         
         alliance_members_names = self.get_alliance_members()
-        member_len = len(alliance_members_names)
-        print(f"alliance_members_names is {alliance_members_names}, count is {member_len}")
+        # member_len = len(alliance_members_names)
+        # (f"alliance_members_names is {alliance_members_names}, count is {member_len}")
         alliance_members_lower = [name.lower() for name in alliance_members_names]
-        chunks = self.chunks(alliance_members_lower, 150)
+        # chunks = self.chunks(alliance_members_lower, 150)
 
         for server_member in server_members[:20]:
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
             # await self.inv_obj(roles_list)
-            for chunk in chunks:
-                await self.debugChannel.send(f"alliance_members_lower = {chunk}")
+            #for chunk in chunks:
+            #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
             if len(roles_list) == 1:
                 continue
             if self.debug:
                 clean_name = self.clean_name(server_member.name.lower())
+                print(alliance_members_lower)
                 if clean_name not in alliance_members_lower:
-                    await self.debugChannel.send(f"NON Alliance member {server_member} roles is {roles_list}")
+                    await self.debugChannel.send(f"NOT Alliance member {clean_name} roles is {roles_list}")
 
             #await self.debugChannel.send(f"member from aly is {e_member}")
 
