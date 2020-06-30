@@ -289,7 +289,7 @@ class MemberPoints(commands.Cog):
             # await self.inv_obj(roles_list)
             #for chunk in chunks:
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
-            if len(roles_list) == 1:
+            if len(roles_list) == 0:
                 continue
             clean_name = self.clean_name(check_name.lower())
             print(f"Check {clean_name}")
