@@ -289,17 +289,15 @@ class MemberPoints(commands.Cog):
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
             if len(roles_list) == 1:
                 continue
-            if self.debug:
-                clean_name = self.clean_name(server_member.name.lower())
-                print(f"Check {clean_name}")
-                for ally_member in alliance_members_lower:
-                    if ally_member == clean_name:
+            clean_name = self.clean_name(server_member.name.lower())
+            print(f"Check {clean_name}")
+            for ally_member in alliance_members_lower:
+                if ally_member == clean_name:
+                    member_found = True
+                    if self.debug:
                         print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
-                        member_found = True
-                    #else:
-                        # print(f"ally_member {ally_member} not equal clean_name {clean_name}. ally_member type {type(ally_member)}")
-                if not member_found:
-                    await self.debugChannel.send(f"NOT Alliance member {clean_name} roles is {roles_list}")
+            if not member_found:
+                await ctx.send(f"NOT Alliance member {server_member.name} roles is {roles_list}. Albion name must be {clean_name}")
 
             #await self.debugChannel.send(f"member from aly is {e_member}")
 
