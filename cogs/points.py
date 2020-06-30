@@ -274,13 +274,15 @@ class MemberPoints(commands.Cog):
 
         for server_member in server_members[:20]:
             server_member_roles = server_member.roles
+            roles_list = (role.name for role in server_member_roles)
+            await self.inv_obj(roles_list)
             if self.debug:
                 clean_name = self.clean_name(server_member.name.lower())
                 await self.debugChannel.send(f"Check clean_name {clean_name}")
                 if clean_name in (name.lower() for name in alliance_members_names):
-                    await self.debugChannel.send(f"Alliance member {server_member} roles is {server_member_roles}")
+                    await self.debugChannel.send(f"Alliance member {server_member} roles is {roles_list}")
                 else:
-                    await self.debugChannel.send(f"NON Alliance member {server_member} roles is {server_member_roles}")
+                    await self.debugChannel.send(f"NON Alliance member {server_member} roles is {roles_list}")
 
             #await self.debugChannel.send(f"member from aly is {e_member}")
 
