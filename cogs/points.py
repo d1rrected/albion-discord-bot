@@ -279,7 +279,7 @@ class MemberPoints(commands.Cog):
 
         
         print(alliance_members_lower)
-        for server_member in server_members[:2]:
+        for server_member in server_members[2:4]:
             member_found = False
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
