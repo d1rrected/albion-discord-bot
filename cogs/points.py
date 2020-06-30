@@ -280,7 +280,7 @@ class MemberPoints(commands.Cog):
         #e_member = alliance_members_names[0]
 
         if self.debug:
-            self.inv_obj(e_member_discord)
+            await self.inv_obj(e_member_discord)
             #await self.debugChannel.send(f"member from aly is {e_member}")
 
 def setup(client):
