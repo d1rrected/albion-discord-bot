@@ -210,10 +210,6 @@ class MemberPoints(commands.Cog):
     async def check_role(self, ctx):
         needed_role = discord.utils.find(lambda r: r.name in officer_roles, ctx.message.guild.roles)
         user_roles = ctx.message.author.roles
-        if self.debug:
-            await self.debugChannel.send(f"user_roles: {user_roles}")
-            await self.debugChannel.send(f"needed_role: {needed_role}")
-            await self.debugChannel.send(f"officer_roles: {officer_roles}")
         access = any(str(role.name) == str(needed_role) for role in user_roles)
         return access
     
@@ -251,9 +247,9 @@ class MemberPoints(commands.Cog):
                 check_role = str(user_role.name).lower().replace('@','')
                 if check_role == need_role:
                     return True
-                else:
-                    if self.debug:
-                        await self.debugChannel.send(f"Checkrole. check_role = {check_role} ({type(check_role)}) not equal need_role = {need_role} ({type(need_role)})")
+                #else:
+                    #if self.debug:
+                    #    await self.debugChannel.send(f"Checkrole. check_role = {check_role} ({type(check_role)}) not equal need_role = {need_role} ({type(need_role)})")
         return False
 
     @commands.command(
@@ -275,13 +271,14 @@ class MemberPoints(commands.Cog):
         for server_member in server_members[:20]:
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
-            await self.inv_obj(roles_list)
+            # await self.inv_obj(roles_list)
+            alliance_members_lower = [name.lower() for name in alliance_members_names]
+            await self.debugChannel.send(f"alliance_members_lower = {alliance_members_lower}")
+            if len(roles_list) == 1:
+                continue
             if self.debug:
                 clean_name = self.clean_name(server_member.name.lower())
-                await self.debugChannel.send(f"Check clean_name {clean_name}")
-                if clean_name in (name.lower() for name in alliance_members_names):
-                    await self.debugChannel.send(f"Alliance member {server_member} roles is {roles_list}")
-                else:
+                if clean_name not in alliance_members_lower:
                     await self.debugChannel.send(f"NON Alliance member {server_member} roles is {roles_list}")
 
             #await self.debugChannel.send(f"member from aly is {e_member}")
