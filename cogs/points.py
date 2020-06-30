@@ -279,7 +279,8 @@ class MemberPoints(commands.Cog):
 
         
         print(alliance_members_lower)
-        for server_member in server_members[:20]:
+        for server_member in server_members[:2]:
+            member_found = False
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
             # await self.inv_obj(roles_list)
@@ -289,7 +290,12 @@ class MemberPoints(commands.Cog):
                 continue
             if self.debug:
                 clean_name = self.clean_name(server_member.name.lower())
-                if clean_name not in alliance_members_lower:
+                for ally_member in alliance_members_lower:
+                    if ally_member == clean_name:
+                        member_found = True
+                    else:
+                        print("ally_member {ally_member} not equal clean_name {clean_name}. ally_member type {type(ally_member)}")
+                if not member_found:
                     await self.debugChannel.send(f"NOT Alliance member {clean_name} roles is {roles_list}")
 
             #await self.debugChannel.send(f"member from aly is {e_member}")
