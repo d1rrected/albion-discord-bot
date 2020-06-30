@@ -276,6 +276,7 @@ class MemberPoints(commands.Cog):
         # (f"alliance_members_names is {alliance_members_names}, count is {member_len}")
         alliance_members_lower = [name.lower() for name in alliance_members_names]
         # chunks = self.chunks(alliance_members_lower, 150)
+        print(alliance_members_lower)
 
         for server_member in server_members[:20]:
             server_member_roles = server_member.roles
@@ -287,7 +288,6 @@ class MemberPoints(commands.Cog):
                 continue
             if self.debug:
                 clean_name = self.clean_name(server_member.name.lower())
-                print(alliance_members_lower)
                 if clean_name not in alliance_members_lower:
                     await self.debugChannel.send(f"NOT Alliance member {clean_name} roles is {roles_list}")
 
