@@ -242,7 +242,7 @@ class AlbionApi():
         return data
 
     def get_our_alliance(self, myGuild='Albion Choppers'):
-        guild = ap.search_guild(myGuild)
+        guild = self.search_guild(myGuild)
         alliance_id = guild["AllianceId"]
         return self.get_alliance(alliance_id)
 
