@@ -272,13 +272,13 @@ class MemberPoints(commands.Cog):
                 server_members.append(member)
         
         alliance_members_names = self.get_alliance_members()
+        alliance_members_lower = [name.lower() for name in alliance_members_names]
+        chunks = self.chunks(alliance_members_lower, 150)
 
         for server_member in server_members[:20]:
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
             # await self.inv_obj(roles_list)
-            alliance_members_lower = [name.lower() for name in alliance_members_names]
-            chunks = self.chunks(alliance_members_lower, 150)
             for chunk in chunks:
                 await self.debugChannel.send(f"alliance_members_lower = {chunk}")
             if len(roles_list) == 1:
