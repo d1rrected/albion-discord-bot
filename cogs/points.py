@@ -294,7 +294,7 @@ class MemberPoints(commands.Cog):
                     if ally_member == clean_name:
                         member_found = True
                     else:
-                        print("ally_member {ally_member} not equal clean_name {clean_name}. ally_member type {type(ally_member)}")
+                        print(f"ally_member {ally_member} not equal clean_name {clean_name}. ally_member type {type(ally_member)}")
                 if not member_found:
                     await self.debugChannel.send(f"NOT Alliance member {clean_name} roles is {roles_list}")
 
