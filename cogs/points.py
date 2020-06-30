@@ -198,7 +198,7 @@ class MemberPoints(commands.Cog):
 
     def clean_name(self, name):
         name_with_tag = self.member_name_with_tag(name)
-        name = re.sub(r'\[.*?\]', '', name)
+        name = re.sub(r'\[.*?\]', '', name_with_tag)
         return name
 
     def remove_points(self, name, points):
@@ -230,9 +230,6 @@ class MemberPoints(commands.Cog):
         names_for_change = self.get_mentioned_users(ctx)
         points_change = re.search(r"[\+\-].\d*", message_text).group()
         points_change_num = points_change[1:]
-
-    
-        
 
     def get_alliance_members(self):
         alliance_members_names = self.albionapi.get_all_alliance_member_names()
@@ -278,7 +275,8 @@ class MemberPoints(commands.Cog):
         for server_member in server_members[:20]:
             server_member_roles = server_member.roles
             if self.debug:
-                if server_member.name.lower() in (name.lower() for name in alliance_members_names):
+                clean_name = self.clean_name(server_member.name.lower())
+                if clean_name in (name.lower() for name in alliance_members_names):
                     await self.debugChannel.send(f"Alliance member {server_member} roles is {server_member_roles}")
                 else:
                     await self.debugChannel.send(f"NON Alliance member {server_member} roles is {server_member_roles}")
