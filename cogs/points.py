@@ -281,15 +281,17 @@ class MemberPoints(commands.Cog):
         
         #print(alliance_members_lower)
         for server_member in server_members:
+            check_name = server_member.display_name
             member_found = False
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
+            roles_list.remove("@everyone")
             # await self.inv_obj(roles_list)
             #for chunk in chunks:
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
             if len(roles_list) == 1:
                 continue
-            clean_name = self.clean_name(server_member.name.lower())
+            clean_name = self.clean_name(check_name.lower())
             print(f"Check {clean_name}")
             for ally_member in alliance_members_lower:
                 if ally_member == clean_name:
@@ -297,9 +299,10 @@ class MemberPoints(commands.Cog):
                     if self.debug:
                         print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
             if not member_found:
-                await ctx.send(f"NOT Alliance member {server_member.name} roles is {roles_list}. Albion name must be {clean_name}")
+                await ctx.send(f"{check_name} NOT in alliance. Roles is {roles_list}.")
 
             #await self.debugChannel.send(f"member from aly is {e_member}")
+        await ctx.send(f"Я кончил.")
 
 def setup(client):
     client.add_cog(MemberPoints(client))
