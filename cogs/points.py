@@ -268,15 +268,15 @@ class MemberPoints(commands.Cog):
         if user_access is False:
             return await ctx.send(f"Ты не офицер, я тебя не знаю.")
 
-        all_members = ctx.message.server.members
-        alliance_members_names = self.get_alliance_members()
+        server = ctx.message.server
+        #alliance_members_names = self.get_alliance_members()
 
-        e_member_discord = all_members[0]
-        e_member = alliance_members_names[0]
+        #e_member_discord = all_members[0]
+        #e_member = alliance_members_names[0]
 
         if self.debug:
-            await self.debugChannel.send(f"Discord member is {e_member_discord}")
-            await self.debugChannel.send(f"member from aly is {e_member}")
+            self.inv_obj(server)
+            #await self.debugChannel.send(f"member from aly is {e_member}")
 
 def setup(client):
     client.add_cog(MemberPoints(client))
