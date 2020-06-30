@@ -272,15 +272,17 @@ class MemberPoints(commands.Cog):
         for guild in self.client.guilds:
             for member in guild.members:
                 server_members.append(member)
-
         
-        #alliance_members_names = self.get_alliance_members()
+        alliance_members_names = self.get_alliance_members()
 
-        e_member_discord = server_members[0]
-        #e_member = alliance_members_names[0]
+        for server_member in server_members[:20]:
+            server_member_roles = server_member.roles
+            if self.debug:
+                if server_member.name.lower() in (name.lower() for name in alliance_members_names):
+                    await self.debugChannel.send(f"Alliance member {server_member} roles is {server_member_roles}")
+                else:
+                    await self.debugChannel.send(f"NON Alliance member {server_member} roles is {server_member_roles}")
 
-        if self.debug:
-            await self.inv_obj(e_member_discord)
             #await self.debugChannel.send(f"member from aly is {e_member}")
 
 def setup(client):
