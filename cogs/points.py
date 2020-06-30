@@ -252,6 +252,11 @@ class MemberPoints(commands.Cog):
                     #    await self.debugChannel.send(f"Checkrole. check_role = {check_role} ({type(check_role)}) not equal need_role = {need_role} ({type(need_role)})")
         return False
 
+    def chunks(self, lst, n):
+        """Yield successive n-sized chunks from lst."""
+        for i in range(0, len(lst), n):
+            yield lst[i:i + n]
+
     @commands.command(
         aliases=["sync"]
     )
@@ -273,7 +278,9 @@ class MemberPoints(commands.Cog):
             roles_list = [role.name for role in server_member_roles]
             # await self.inv_obj(roles_list)
             alliance_members_lower = [name.lower() for name in alliance_members_names]
-            await self.debugChannel.send(f"alliance_members_lower = {alliance_members_lower}")
+            chunks = self.chunks(alliance_members_lower, 150)
+            for chunk in chunks:
+                await self.debugChannel.send(f"alliance_members_lower = {chunk}")
             if len(roles_list) == 1:
                 continue
             if self.debug:
