@@ -274,7 +274,7 @@ class MemberPoints(commands.Cog):
 
         for server_member in server_members[:20]:
             server_member_roles = server_member.roles
-            roles_list = (role.name for role in server_member_roles)
+            roles_list = [role.name for role in server_member_roles]
             await self.inv_obj(roles_list)
             if self.debug:
                 clean_name = self.clean_name(server_member.name.lower())
