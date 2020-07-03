@@ -305,7 +305,7 @@ class MemberPoints(commands.Cog):
                 await ctx.send(f"Finish. Убраны все роли у {initial_count} мемберов.")
                 return True
             else:
-                print(f"Check {clean_name}")
+                # print(f"Check {clean_name}")
                 for ally_member in alliance_members_lower:
                     if ally_member == clean_name:
                         member_found = True
@@ -314,10 +314,10 @@ class MemberPoints(commands.Cog):
                         await ctx.send(f"Роли пользователя {check_name} в списке исключений. Его роли: {roles_list} ")
                         continue
                     count = count - 1
-                    print(f"member {clean_name} not found in alliance.")
+                    # print(f"member {clean_name} not found in alliance.")
 
+                    await ctx.send(f"{check_name} НЕ в альянсе. Убираем роли мембера: {roles_list}")
                     if not isTest:
-                        await ctx.send(f"{check_name} НЕ в альянсе. Убираем роли мембера: {roles_list}")
                         for role in server_member_roles:
                             if "everyone" in role.name.lower():
                                 continue
