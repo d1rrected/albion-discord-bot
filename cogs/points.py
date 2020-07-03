@@ -17,6 +17,7 @@ alliance = "ARCH4"
 user_start_points = 800
 
 except_names = ["indagames"]
+except_roles = ["ОФИЦЕР"]
 
 
 
@@ -287,6 +288,10 @@ class MemberPoints(commands.Cog):
             # await self.inv_obj(roles_list)
             #for chunk in chunks:
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
+
+            if set(roles_list).intersection(except_roles):
+                await ctx.send(f"Dont remove roles for {check_name}. Roles list: {roles_list}")
+                continue
 
             for clean_name in except_names:
                 continue
