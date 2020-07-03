@@ -196,8 +196,8 @@ class MemberPoints(commands.Cog):
         name = re.sub(r'\(.*?\)', '', name).replace("@", "").strip()
         return name
 
-    def clean_name(self, name):
-        name_with_tag = self.member_name_with_tag(name)
+    def clean_name(self, member_name):
+        name_with_tag = self.member_name_with_tag(member_name)
         name = re.sub(r'\[.*?\]', '', name_with_tag)
         name = name.strip()
         return name
@@ -291,6 +291,7 @@ class MemberPoints(commands.Cog):
                         print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
             if not member_found:
                 member_id = server_member.id
+                print(f"member {clean_name} not found in alliance.")
                 print(f"server_member is {server_member}")
                 print(f"member_id is {member_id}")
 
@@ -299,7 +300,7 @@ class MemberPoints(commands.Cog):
                 if not isTest:
                     for role in server_member_roles:
                         await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove role {role}")
-                        # await server_member.remove_roles(role)
+                        await server_member.remove_roles(role)
                 await ctx.send(f"{check_name} NOT in alliance. Remove roles: {roles_list}.")
 
     @commands.command(
