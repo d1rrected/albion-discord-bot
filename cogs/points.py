@@ -315,7 +315,7 @@ class MemberPoints(commands.Cog):
                     if not isTest:
                         await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove roles {roles_list}")
                         for role in server_member_roles:
-                            if "everyone" in role:
+                            if "everyone" in role.name.lower():
                                 continue
                             else:
                                 await ctx.send(f"Remove role {role}")
