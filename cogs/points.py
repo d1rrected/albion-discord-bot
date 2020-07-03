@@ -270,7 +270,7 @@ class MemberPoints(commands.Cog):
         for guild in self.client.guilds:
             for member in guild.members:
                 server_members.append(member)
-        
+        initial_count = count
         alliance_members_names = self.get_alliance_members()
         # member_len = len(alliance_members_names)
         # (f"alliance_members_names is {alliance_members_names}, count is {member_len}")
@@ -289,9 +289,7 @@ class MemberPoints(commands.Cog):
             #for chunk in chunks:
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
 
-            if set(roles_list).intersection(except_roles):
-                await ctx.send(f"Don't remove roles for {check_name}. Roles list: {roles_list} ")
-                continue
+
 
             if len(roles_list) == 0:
                 continue
@@ -299,8 +297,8 @@ class MemberPoints(commands.Cog):
             if "@BOT" in roles_list:
                 continue
 
-            if count < 0:
-                await ctx.send(f"Finish. Removed all roles of {count} members. ")
+            if count <= 0:
+                await ctx.send(f"Finish. Removed all roles of {initial_count} members. ")
                 return True
             else:
                 print(f"Check {clean_name}")
@@ -310,6 +308,9 @@ class MemberPoints(commands.Cog):
                         if self.debug:
                             print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
                 if not member_found:
+                    if set(roles_list).intersection(except_roles):
+                        await ctx.send(f"Don't remove roles for {check_name}. Roles list: {roles_list} ")
+                        continue
                     count = count - 1
                     member_id = server_member.id
                     print(f"member {clean_name} not found in alliance.")
