@@ -325,7 +325,6 @@ class MemberPoints(commands.Cog):
                                 print(f"{check_name}: remove role {role}")
                                 try:
                                     await server_member.remove_roles(role)
-                                    break
                                 except:
                                     print("Unexpected error:")
                                     print(sys.exc_info()[0])
