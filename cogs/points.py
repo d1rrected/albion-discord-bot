@@ -292,6 +292,7 @@ class MemberPoints(commands.Cog):
             if not member_found:
                 member_id = server_member.id
                 member = guild.get_member(member_id)
+                print(f"member is {member}")
                 if isTest:
                     for role in server_member_roles:
                         await member.remove_roles(role)
