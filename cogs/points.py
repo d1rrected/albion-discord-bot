@@ -330,6 +330,7 @@ class MemberPoints(commands.Cog):
                                     continue
                     else:
                         await ctx.send(f"{check_name} НЕ в альянсе. Нужно убрать роли: {roles_list}.")
+        await ctx.send(f"Я кончил.")
 
     @commands.command(
         aliases=["rt"]
