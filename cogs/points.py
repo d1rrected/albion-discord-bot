@@ -293,7 +293,7 @@ class MemberPoints(commands.Cog):
                 continue
 
             if count <= 0:
-                await ctx.send(f"Finish. Removed all roles of {initial_count} members. ")
+                await ctx.send(f"Finish. Убраны все роли у {initial_count} мемберов.")
                 return True
             else:
                 print(f"Check {clean_name}")
@@ -304,24 +304,22 @@ class MemberPoints(commands.Cog):
                             print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
                 if not member_found:
                     if set(roles_list).intersection(except_roles):
-                        await ctx.send(f"Don't remove roles for {check_name}. Roles list: {roles_list} ")
+                        await ctx.send(f"Роли пользователя {check_name} в списке исключений. Его роли: {roles_list} ")
                         continue
                     count = count - 1
                     member_id = server_member.id
                     print(f"member {clean_name} not found in alliance.")
-                    print(f"server_member is {server_member}")
-                    print(f"member_id is {member_id}")
 
                     if not isTest:
-                        await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove roles {roles_list}")
+                        await ctx.send(f"{check_name} НЕ в альянсе. Убираем роли мембера: {roles_list}")
                         for role in server_member_roles:
                             if "everyone" in role.name.lower():
                                 continue
                             else:
-                                await ctx.send(f"Remove role {role}")
+                                # await ctx.send(f"Remove role {role}")
                                 await server_member.remove_roles(role)
                     else:
-                        await ctx.send(f"{check_name} NOT in alliance. Roles for remove: {roles_list}.")
+                        await ctx.send(f"{check_name} НЕ в альянсе. Нужно убрать роли: {roles_list}.")
 
     @commands.command(
         aliases=["rt"]
