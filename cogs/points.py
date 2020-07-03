@@ -18,7 +18,7 @@ alliance = "ARCH4"
 user_start_points = 800
 
 except_names = ["indagames"]
-except_roles = ["ОФИЦЕР", "BOT"]
+except_roles = ["ОФИЦЕР", "BOT", "HG"]
 
 
 
