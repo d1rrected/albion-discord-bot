@@ -269,9 +269,9 @@ class MemberPoints(commands.Cog):
         # (f"alliance_members_names is {alliance_members_names}, count is {member_len}")
         alliance_members_lower = [name.lower() for name in alliance_members_names]
         # chunks = self.chunks(alliance_members_lower, 150)
-        
+        guild = self.client.guilds[0]
         #print(alliance_members_lower)
-        for server_member in server_members[:count]:
+        for server_member in guild.members[:count]:
             check_name = server_member.display_name
             member_found = False
             server_member_roles = server_member.roles
@@ -295,8 +295,6 @@ class MemberPoints(commands.Cog):
                 print(f"server_member is {server_member}")
                 print(f"member_id is {member_id}")
 
-                member = guild.get_member(member_id)
-                print(f"member is {member}")
                 if not isTest:
                     for role in server_member_roles:
                         await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove role {role}")
