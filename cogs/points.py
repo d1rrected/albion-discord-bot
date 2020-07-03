@@ -319,7 +319,7 @@ class MemberPoints(commands.Cog):
                                 continue
                             else:
                                 await ctx.send(f"Remove role {role}")
-                                # await server_member.remove_roles(role)
+                                await server_member.remove_roles(role)
                     else:
                         await ctx.send(f"{check_name} NOT in alliance. Roles for remove: {roles_list}.")
 
