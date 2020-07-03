@@ -11,6 +11,7 @@ import re
 from oauth2client.service_account import ServiceAccountCredentials
 from cogs.search import Search
 import services.albionapi
+import sys
 
 officer_roles = "@ОФИЦЕР,@управление"
 alliance = "ARCH4"
@@ -313,7 +314,6 @@ class MemberPoints(commands.Cog):
                         await ctx.send(f"Роли пользователя {check_name} в списке исключений. Его роли: {roles_list} ")
                         continue
                     count = count - 1
-                    member_id = server_member.id
                     print(f"member {clean_name} not found in alliance.")
 
                     if not isTest:
@@ -323,7 +323,13 @@ class MemberPoints(commands.Cog):
                                 continue
                             else:
                                 # await ctx.send(f"Remove role {role}")
-                                await server_member.remove_roles(role)
+                                try:
+                                    await server_member.remove_roles(role)
+                                    break
+                                except:
+                                    print("Unexpected error:", sys.exc_info()[0])
+                                    raise
+
                     else:
                         await ctx.send(f"{check_name} НЕ в альянсе. Нужно убрать роли: {roles_list}.")
 
