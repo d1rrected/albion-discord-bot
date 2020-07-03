@@ -327,7 +327,8 @@ class MemberPoints(commands.Cog):
                                     await server_member.remove_roles(role)
                                     break
                                 except:
-                                    print("Unexpected error:", sys.exc_info()[0])
+                                    print("Unexpected error:")
+                                    print(sys.exc_info()[0])
                                     continue
                     else:
                         await ctx.send(f"{check_name} НЕ в альянсе. Нужно убрать роли: {roles_list}.")
