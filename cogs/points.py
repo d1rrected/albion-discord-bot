@@ -16,6 +16,8 @@ officer_roles = "@ОФИЦЕР,@управление"
 alliance = "ARCH4"
 user_start_points = 800
 
+except_names = ["INDAGAMES"]
+
 
 
 class MemberPoints(commands.Cog):
@@ -275,7 +277,7 @@ class MemberPoints(commands.Cog):
         # chunks = self.chunks(alliance_members_lower, 150)
         guild = self.client.guilds[0]
         #print(alliance_members_lower)
-        for server_member in guild.members[:count]:
+        for server_member in guild.members:
             check_name = server_member.display_name
             member_found = False
             server_member_roles = server_member.roles
@@ -284,28 +286,41 @@ class MemberPoints(commands.Cog):
             # await self.inv_obj(roles_list)
             #for chunk in chunks:
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
+
+            for except_name in except_names:
+                if except_name in check_name:
+                    skip = True
+            if skip:
+                continue
+
             if len(roles_list) == 0:
                 continue
+
             if "@BOT" in roles_list:
                 continue
-            clean_name = self.clean_name(check_name.lower())
-            print(f"Check {clean_name}")
-            for ally_member in alliance_members_lower:
-                if ally_member == clean_name:
-                    member_found = True
-                    if self.debug:
-                        print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
-            if not member_found:
-                member_id = server_member.id
-                print(f"member {clean_name} not found in alliance.")
-                print(f"server_member is {server_member}")
-                print(f"member_id is {member_id}")
 
-                if not isTest:
-                    for role in server_member_roles:
-                        await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove role {role}")
-                        # await server_member.remove_roles(role)
-                await ctx.send(f"{check_name} NOT in alliance. Remove roles: {roles_list}.")
+            if count == 0:
+                await ctx.send(f"Finish. Removed all roles of {count} members.")
+            else:
+                clean_name = self.clean_name(check_name.lower())
+                print(f"Check {clean_name}")
+                for ally_member in alliance_members_lower:
+                    if ally_member == clean_name:
+                        member_found = True
+                        if self.debug:
+                            print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
+                if not member_found:
+                    count = count - 1
+                    member_id = server_member.id
+                    print(f"member {clean_name} not found in alliance.")
+                    print(f"server_member is {server_member}")
+                    print(f"member_id is {member_id}")
+
+                    if not isTest:
+                        for role in server_member_roles:
+                            await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove role {role}")
+                            # await server_member.remove_roles(role)
+                    await ctx.send(f"{check_name} NOT in alliance. Remove roles: {roles_list}.")
 
     @commands.command(
         aliases=["rt"]
