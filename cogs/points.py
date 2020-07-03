@@ -310,7 +310,7 @@ class MemberPoints(commands.Cog):
     @commands.command(
         aliases=["rt"]
     )
-    async def remove_roles(self, ctx, *, message):
+    async def remove_roles_test(self, ctx, *, message):
         await ctx.channel.trigger_typing()
         user_access = await self.check_user_access(ctx)
         if user_access is False:
