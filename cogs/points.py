@@ -72,7 +72,7 @@ class MemberPoints(commands.Cog):
         await self.find_or_create_record(ctx, ctx.message.author.display_name)
             
     @commands.command(
-        aliases=["ш", "д", "+", "-", "add", "remove", "reward", "отсыпь", "штраф", "корректировочка"]
+        aliases=["ш", "д", "+", "-", "add", "remove", "reward", "отсыпь", "штраф", "корректировочкаs"]
     )
     async def process_user(self, ctx, *, message):
         await ctx.channel.trigger_typing()
