@@ -17,7 +17,7 @@ alliance = "ARCH4"
 user_start_points = 800
 
 except_names = ["indagames"]
-except_roles = ["ОФИЦЕР"]
+except_roles = ["ОФИЦЕР", "HG", "BOT"]
 
 
 
@@ -289,6 +289,12 @@ class MemberPoints(commands.Cog):
             if len(roles_list) == 0:
                 continue
 
+            if "bot" in roles_list:
+                continue
+            if "@bot" in roles_list:
+                continue
+            if "BOT" in roles_list:
+                continue
             if "@BOT" in roles_list:
                 continue
 
