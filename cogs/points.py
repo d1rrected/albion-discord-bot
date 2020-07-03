@@ -258,6 +258,59 @@ class MemberPoints(commands.Cog):
         for i in range(0, len(lst), n):
             yield lst[i:i + n]
 
+    async def remove_member_roles(self, ctx, count, isTest=True):
+        server_members = []
+        for guild in self.client.guilds:
+            for member in guild.members:
+                server_members.append(member)
+        
+        alliance_members_names = self.get_alliance_members()
+        # member_len = len(alliance_members_names)
+        # (f"alliance_members_names is {alliance_members_names}, count is {member_len}")
+        alliance_members_lower = [name.lower() for name in alliance_members_names]
+        # chunks = self.chunks(alliance_members_lower, 150)
+        
+        #print(alliance_members_lower)
+        for server_member in server_members:
+            check_name = server_member.display_name
+            member_found = False
+            server_member_roles = server_member.roles
+            roles_list = [role.name for role in server_member_roles]
+            roles_list.remove("@everyone")
+            # await self.inv_obj(roles_list)
+            #for chunk in chunks:
+            #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
+            if len(roles_list) == 0:
+                continue
+            clean_name = self.clean_name(check_name.lower())
+            print(f"Check {clean_name}")
+            for ally_member in alliance_members_lower[:2]:
+                if ally_member == clean_name:
+                    member_found = True
+                    if self.debug:
+                        print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
+            if not member_found:
+                member_id = server_member.id
+                member = guild.get_member(member_id)
+                if isTest:
+                    for role in server_member_roles:
+                        await member.remove_roles(role)
+                await ctx.send(f"{check_name} NOT in alliance. Remove roles: {roles_list}.")
+
+    @commands.command(
+        aliases=["rt"]
+    )
+    async def remove_roles(self, ctx, *, message):
+        await ctx.channel.trigger_typing()
+        user_access = await self.check_user_access(ctx)
+        if user_access is False:
+            return await ctx.send(f"Ты не офицер, я тебя не знаю.")
+
+        message_text = ctx.message.content.replace("!", "")
+        count = [int(s) for s in message_text.split() if s.isdigit()][0]
+
+        await self.remove_member_roles(ctx, count)
+
     @commands.command(
         aliases=["sync"]
     )
@@ -277,7 +330,6 @@ class MemberPoints(commands.Cog):
         # (f"alliance_members_names is {alliance_members_names}, count is {member_len}")
         alliance_members_lower = [name.lower() for name in alliance_members_names]
         # chunks = self.chunks(alliance_members_lower, 150)
-
         
         #print(alliance_members_lower)
         for server_member in server_members:
@@ -293,13 +345,19 @@ class MemberPoints(commands.Cog):
                 continue
             clean_name = self.clean_name(check_name.lower())
             print(f"Check {clean_name}")
-            for ally_member in alliance_members_lower:
+            for ally_member in alliance_members_lower[:2]:
                 if ally_member == clean_name:
                     member_found = True
                     if self.debug:
                         print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
             if not member_found:
-                await ctx.send(f"{check_name} NOT in alliance. Roles is {roles_list}.")
+                member_id = server_member.id
+                member = guild.get_member(member_id)
+                for role in server_member_roles:
+                    await member.remove_roles(role)
+                await ctx.send(f"{check_name} NOT in alliance. Roles is {roles_list}. Remove all roles.")
+
+
 
             #await self.debugChannel.send(f"member from aly is {e_member}")
         await ctx.send(f"Я кончил.")
