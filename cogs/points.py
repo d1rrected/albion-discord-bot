@@ -16,7 +16,7 @@ officer_roles = "@ОФИЦЕР,@управление"
 alliance = "ARCH4"
 user_start_points = 800
 
-except_names = ["INDAGAMES"]
+except_names = ["indagames"]
 
 
 
@@ -279,6 +279,7 @@ class MemberPoints(commands.Cog):
         #print(alliance_members_lower)
         for server_member in guild.members:
             check_name = server_member.display_name
+            clean_name = self.clean_name(check_name.lower())
             member_found = False
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
@@ -287,10 +288,7 @@ class MemberPoints(commands.Cog):
             #for chunk in chunks:
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
 
-            for except_name in except_names:
-                if except_name in check_name:
-                    skip = True
-            if skip:
+            for clean_name in except_names:
                 continue
 
             if len(roles_list) == 0:
@@ -302,7 +300,6 @@ class MemberPoints(commands.Cog):
             if count == 0:
                 await ctx.send(f"Finish. Removed all roles of {count} members.")
             else:
-                clean_name = self.clean_name(check_name.lower())
                 print(f"Check {clean_name}")
                 for ally_member in alliance_members_lower:
                     if ally_member == clean_name:
