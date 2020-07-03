@@ -290,7 +290,7 @@ class MemberPoints(commands.Cog):
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
 
             if set(roles_list).intersection(except_roles):
-                await ctx.send(f"Dont remove roles for {check_name}. Roles list: {roles_list}")
+                await ctx.send(f"Dont remove roles for {check_name}. Roles list: {roles_list} ")
                 continue
 
             for clean_name in except_names:
