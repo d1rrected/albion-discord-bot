@@ -299,8 +299,9 @@ class MemberPoints(commands.Cog):
             if "@BOT" in roles_list:
                 continue
 
-            if count == 0:
+            if count < 0:
                 await ctx.send(f"Finish. Removed all roles of {count} members. ")
+                return True
             else:
                 print(f"Check {clean_name}")
                 for ally_member in alliance_members_lower:
