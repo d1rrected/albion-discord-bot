@@ -286,6 +286,8 @@ class MemberPoints(commands.Cog):
             #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
             if len(roles_list) == 0:
                 continue
+            if "@BOT" in roles_list:
+                continue
             clean_name = self.clean_name(check_name.lower())
             print(f"Check {clean_name}")
             for ally_member in alliance_members_lower:
@@ -318,6 +320,20 @@ class MemberPoints(commands.Cog):
         count = [int(s) for s in message_text.split() if s.isdigit()][0]
 
         await self.remove_member_roles(ctx, count)
+
+    @commands.command(
+        aliases=["rc"]
+    )
+    async def remove_roles(self, ctx, *, message):
+        await ctx.channel.trigger_typing()
+        user_access = await self.check_user_access(ctx)
+        if user_access is False:
+            return await ctx.send(f"Ты не офицер, я тебя не знаю.")
+
+        message_text = ctx.message.content.replace("!", "")
+        count = [int(s) for s in message_text.split() if s.isdigit()][0]
+
+        await self.remove_member_roles(ctx, count, False)
 
     @commands.command(
         aliases=["sync"]
