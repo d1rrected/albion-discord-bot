@@ -322,7 +322,7 @@ class MemberPoints(commands.Cog):
                             if "everyone" in role.name.lower():
                                 continue
                             else:
-                                # await ctx.send(f"Remove role {role}")
+                                print(f"{check_name}: remove role {role}")
                                 try:
                                     await server_member.remove_roles(role)
                                     break
