@@ -328,8 +328,7 @@ class MemberPoints(commands.Cog):
                                     break
                                 except:
                                     print("Unexpected error:", sys.exc_info()[0])
-                                    raise
-
+                                    break
                     else:
                         await ctx.send(f"{check_name} НЕ в альянсе. Нужно убрать роли: {roles_list}.")
 
