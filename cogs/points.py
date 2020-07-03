@@ -279,6 +279,8 @@ class MemberPoints(commands.Cog):
         # chunks = self.chunks(alliance_members_lower, 150)
         guild = self.client.guilds[0]
         #print(alliance_members_lower)
+        alliance_members_count = len(alliance_members_names)
+        server_members_count = len(guild.members)
         for server_member in guild.members:
             check_name = server_member.display_name
             clean_name = self.clean_name(check_name.lower())
@@ -330,7 +332,8 @@ class MemberPoints(commands.Cog):
                                     continue
                     else:
                         await ctx.send(f"{check_name} НЕ в альянсе. Нужно убрать роли: {roles_list}.")
-        await ctx.send(f"Я кончил.")
+        print(f"List is over.")
+        await ctx.send(f"Я кончил. В альянсе {alliance_members_count}, на сервере {server_members_count}.")
 
     @commands.command(
         aliases=["rt"]
