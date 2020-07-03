@@ -300,7 +300,7 @@ class MemberPoints(commands.Cog):
                 continue
 
             if count == 0:
-                await ctx.send(f"Finish. Removed all roles of {count} members.")
+                await ctx.send(f"Finish. Removed all roles of {count} members. ")
             else:
                 print(f"Check {clean_name}")
                 for ally_member in alliance_members_lower:
