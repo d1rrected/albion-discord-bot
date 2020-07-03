@@ -285,11 +285,6 @@ class MemberPoints(commands.Cog):
             server_member_roles = server_member.roles
             roles_list = [role.name for role in server_member_roles]
             roles_list.remove("@everyone")
-            # await self.inv_obj(roles_list)
-            #for chunk in chunks:
-            #    await self.debugChannel.send(f"alliance_members_lower = {chunk}")
-
-
 
             if len(roles_list) == 0:
                 continue
@@ -318,10 +313,12 @@ class MemberPoints(commands.Cog):
                     print(f"member_id is {member_id}")
 
                     if not isTest:
+                        await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove roles {roles_list}")
                         for role in server_member_roles:
-                            await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove role {role}")
+                            await ctx.send(f"Remove role {role}")
                             # await server_member.remove_roles(role)
-                    await ctx.send(f"{check_name} NOT in alliance. Remove roles: {roles_list}.")
+                    else:
+                        await ctx.send(f"{check_name} NOT in alliance. Roles for remove: {roles_list}.")
 
     @commands.command(
         aliases=["rt"]
