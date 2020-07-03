@@ -199,7 +199,7 @@ class MemberPoints(commands.Cog):
     def clean_name(self, member_name):
         name_with_tag = self.member_name_with_tag(member_name)
         name = re.sub(r'\[.*?\]', '', name_with_tag)
-        name = name.strip()
+        name = name.split(' ')[1].strip()
         return name
 
     def remove_points(self, name, points):
