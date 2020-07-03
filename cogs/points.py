@@ -18,7 +18,7 @@ alliance = "ARCH4"
 user_start_points = 800
 
 except_names = ["indagames"]
-except_roles = ["ОФИЦЕР", "HG", "BOT"]
+except_roles = ["ОФИЦЕР", "BOT"]
 
 
 
@@ -319,7 +319,7 @@ class MemberPoints(commands.Cog):
                     if not isTest:
                         await ctx.send(f"{check_name} НЕ в альянсе. Убираем роли мембера: {roles_list}")
                         for role in server_member_roles:
-                            if "everyone" in role.name.lower():
+                            if "everyone" in role.name.lower() or "hg" == role.name.lower():
                                 continue
                             else:
                                 # await ctx.send(f"Remove role {role}")
@@ -328,7 +328,7 @@ class MemberPoints(commands.Cog):
                                     break
                                 except:
                                     print("Unexpected error:", sys.exc_info()[0])
-                                    break
+                                    continue
                     else:
                         await ctx.send(f"{check_name} НЕ в альянсе. Нужно убрать роли: {roles_list}.")
 
