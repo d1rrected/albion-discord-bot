@@ -307,8 +307,6 @@ class MemberPoints(commands.Cog):
                 for ally_member in alliance_members_lower:
                     if ally_member == clean_name:
                         member_found = True
-                        if self.debug:
-                            print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
                 if not member_found:
                     if set(roles_list).intersection(except_roles):
                         await ctx.send(f"Роли пользователя {check_name} в списке исключений. Его роли: {roles_list} ")
