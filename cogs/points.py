@@ -300,7 +300,7 @@ class MemberPoints(commands.Cog):
                 if not isTest:
                     for role in server_member_roles:
                         await ctx.send(f"WE REMOVE ROLES FOR {check_name}. Remove role {role}")
-                        await server_member.remove_roles(role)
+                        # await server_member.remove_roles(role)
                 await ctx.send(f"{check_name} NOT in alliance. Remove roles: {roles_list}.")
 
     @commands.command(
