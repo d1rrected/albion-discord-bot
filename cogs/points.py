@@ -291,6 +291,9 @@ class MemberPoints(commands.Cog):
                         print(f"ally_member {ally_member} IS EQUAL clean_name {clean_name}")
             if not member_found:
                 member_id = server_member.id
+                print(f"server_member is {server_member}")
+                print(f"member_id is {member_id}")
+
                 member = guild.get_member(member_id)
                 print(f"member is {member}")
                 if isTest:
