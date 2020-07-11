@@ -49,6 +49,10 @@ class SpreadSheet():
     def get_all_records(self):
         return self.SHEET.get_all_records()
 
+    def get_cell_value(self, cell_name, value_row):
+        cell = self.SHEET.find(cell_name)
+        return cell["value_row"]
+
     def check_row_value_exists(self, value):
         if any(obj['Id'] == value for obj in self.RECORDS):
             return True

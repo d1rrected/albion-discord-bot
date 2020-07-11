@@ -106,6 +106,10 @@ class MemberPoints(commands.Cog):
             if ctx.channel.id not in self.workChannel:
                 return
 
+    @commands.command(
+        aliases=["bank", "банк"]
+    )
+    async def bank(self, ctx, *, message):
 
     @commands.command(
         aliases=["get", "покажи", "show"]
@@ -135,6 +139,11 @@ class MemberPoints(commands.Cog):
         else:
             user_points = self.get_user_points(name_change)
             await ctx.send(f"Ля какой - {name_change} - {user_points} очков")
+
+    @commands.command(
+        aliases=["vp"]
+    )
+    async def get_my_points(self, ctx)
 
     async def find_or_create_record(self, ctx, username, send_output=True):
         name_change = self.member_name_with_tag(username)
@@ -176,6 +185,9 @@ class MemberPoints(commands.Cog):
         else:
             return True
 
+    async def get_discord_channel_members(self, ctx):
+        channel = ctx.message.author.voice.voice_channel 
+        print(f"channel {channel}")
 
     def get_member(self, name):
         member_list = self.SHEET.get_all_records()
